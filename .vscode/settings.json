@@ -1,0 +1,18 @@
+{
+    "files.associations": {
+        "lv_demos.h": "c",
+        "lv_conf_internal.h": "c",
+        "lvgl.h": "c",
+        "time.h": "c",
+        "deque": "cpp",
+        "string": "cpp",
+        "vector": "cpp",
+        "optional": "cpp",
+        "array": "cpp",
+        "list": "cpp",
+        "unordered_map": "cpp",
+        "string_view": "cpp",
+        "initializer_list": "cpp",
+        "chrono": "cpp"
+    }
+}

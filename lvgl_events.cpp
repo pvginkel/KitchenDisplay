@@ -32,6 +32,7 @@ void lv_obj_add_event(lv_obj_t* obj, lv_event_code_t event, function<void()> fun
     }
 
     if (!event_manager) {
+        event_manager = new LvglEventManager();
         lv_obj_add_event_cb(obj, LvglEventManager::cb, LV_EVENT_ALL, event_manager);
     }
 

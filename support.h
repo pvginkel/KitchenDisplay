@@ -31,6 +31,11 @@ public:
         return _value.value();
     }
 
+    const T& value() const {
+        assert(is_ok());
+        return _value.value();
+    }
+
     E error() const {
         assert(!is_ok());
         return _error;

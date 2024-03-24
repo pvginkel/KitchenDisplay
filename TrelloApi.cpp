@@ -16,6 +16,25 @@ bool TrelloCard::has_label(char const *label) const {
     return false;
 }
 
+bool TrelloCard::is_match(const string& search) { return is_match(_name, search) || is_match(_description, search); }
+
+bool TrelloCard::is_match(const string& field, const string& value) {
+    if (value.empty()) {
+        return true;
+    }
+
+    istringstream value_stream(value);
+    string word;
+
+    while (value_stream >> word) {
+        if (field.find(word) == std::string::npos) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 TrelloApi::TrelloApi(string api_key, string user_token)
     : _api_key(std::move(api_key)), _user_token(std::move(user_token)) {
     _cache_path = "cache";
@@ -124,7 +143,30 @@ TrelloResult<string> TrelloApi::get_cached(const string &url) {
     stringstream buffer;
     buffer << file.rdbuf();
 
-    return buffer.str();
+    return simplify_unicode(buffer.str());
+}
+
+TrelloResult<string> TrelloApi::simplify_unicode(const string& str) {
+    UErrorCode status = U_ZERO_ERROR;
+
+    // Create a UnicodeString that contains an 'e' followed by the combining grave accent (U+0300)
+    icu::UnicodeString originalStr = icu::UnicodeString::fromUTF8(str.c_str());
+
+    // Normalize the string to NFC form to combine characters
+    icu::UnicodeString normalizedStr;
+    icu::Normalizer::normalize(originalStr, UNORM_NFC, 0, normalizedStr, status);
+
+    if (U_FAILURE(status)) {
+        return TrelloError::RequestInvalid;
+    }
+
+    // Convert normalized string back to UTF-8 for display
+    std::string utf8Result;
+    normalizedStr.toUTF8String(utf8Result);
+
+    //std::cout << "Original: " << originalStr << " | Normalized: " << utf8Result << std::endl;
+
+    return utf8Result;
 }
 
 string TrelloApi::get_cache_key(const string &url) { return sha1(url); }
@@ -174,11 +216,20 @@ TrelloResult<string> TrelloApi::get_file(const string &url, const string &extens
 
     auto res = curl_easy_perform(curl);
 
+    file.close();
+
     curl_easy_cleanup(curl);
     curl_slist_free_all(headers);
 
-    if (res != CURLE_OK) {
-        LOGE(TAG, "Request failed %d", (int)res);
+    long status_code = 0;
+    if (res == CURLE_OK) {
+        curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &status_code);
+    }
+
+    if (status_code < 200 || status_code >= 300) {
+        filesystem::remove(file_name);
+
+        LOGE(TAG, "Request failed %d status code %d", (int)res, (int)status_code);
 
         return TrelloError::RequestFailed;
     }

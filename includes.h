@@ -7,6 +7,8 @@
 #include <math.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <unicode/unistr.h>
+#include <unicode/normlzr.h>
 
 #ifndef LV_SIMULATOR
 
@@ -42,6 +44,7 @@ using namespace std;
 #include "Callback.h"
 #include "lvgl_events.h"
 #include "support.h"
+#include "Messages.h"
 
 #ifdef LV_SIMULATOR
 

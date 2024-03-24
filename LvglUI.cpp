@@ -42,7 +42,7 @@ void LvglUI::render() {
 
     lv_obj_clean(parent);
 
-    lv_theme_default_init(nullptr, lv_palette_main(LV_PALETTE_GREY), lv_palette_main(LV_PALETTE_GREY),
+    lv_theme_default_init(nullptr, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_CYAN),
                           LV_THEME_DEFAULT_DARK, NORMAL_FONT);
 
     lv_obj_set_style_bg_color(parent, lv_color_black(), LV_PART_MAIN);

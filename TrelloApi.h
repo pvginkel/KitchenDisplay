@@ -30,6 +30,10 @@ public:
     const optional<string>& id_attachment_cover() const { return _id_attachment_cover; }
     const vector<string>& labels() const { return _labels; }
     bool has_label(char const* label) const;
+    bool is_match(const string& search);
+
+private:
+    bool is_match(const string& field, const string& value);
 };
 
 class TrelloCardAttachment {
@@ -62,5 +66,6 @@ public:
 private:
     TrelloResult<string> get_file(const string& url, const string& extension, bool force = false);
     TrelloResult<string> get_cached(const string& url);
+    TrelloResult<string> simplify_unicode(const string& str);
     string get_cache_key(const string& url);
 };

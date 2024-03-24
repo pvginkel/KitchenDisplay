@@ -2,7 +2,7 @@ import { execSync } from 'child_process';
 import * as fs from 'fs';
 
 const fonts: [{ name: string; size: number | [number]; fonts: [{ file: string; range: string }] }] = JSON.parse(
-  fs.readFileSync('generate-fonts.json', 'utf-8')
+    fs.readFileSync('generate-fonts.json', 'utf-8').replace(/^\s*\/\/.*$/gm, '')
 );
 
 for (const font of fonts) {

@@ -1,4 +1,5 @@
 #pragma once
+#pragma once
 
 #include "LvglUI.h"
 
@@ -11,7 +12,10 @@ class HomeUI : public LvglUI {
     Queue* _queue;
     TrelloApi* _api;
     result<vector<TrelloCard>, TrelloError> _cards;
+    map<string, lv_obj_t*> _card_attachment_cover_images;
     map<string, string> _card_attachment_cover_files;
+    lv_obj_t* _keyboard;
+    string _search;
 
 public:
     HomeUI(Tasks* tasks, Queue* queue, TrelloApi* api)
@@ -23,6 +27,7 @@ protected:
 
 private:
     void refresh_cards();
-    void cards_loaded(const result<vector<TrelloCard>, TrelloError>& cards,
-                      const map<string, string>& card_attachment_cover_files);
+    void cards_loaded(const result<vector<TrelloCard>, TrelloError>& cards);
+    void load_attachment_covers(vector<TrelloCard> cards);
+    void delete_keyboard();
 };

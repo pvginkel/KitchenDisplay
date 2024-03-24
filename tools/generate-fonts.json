@@ -1,3 +1,5 @@
+// Use https://dotnetfiddle.net/Iglnxu to convert FA glyphs to UTF8.
+
 [
   {
     "name": "lv_font_roboto_{size}",
@@ -5,7 +7,7 @@
     "fonts": [
       {
         "file": "Roboto-Regular.ttf",
-        "range": "0x20-0x7F,0xB0,0x2022,0x2018,0x2019"
+        "range": "0x20-0xFF,0x2022,0x2018,0x2019"
       },
       {
         "file": "FontAwesome5-Solid+Brands+Regular.woff",
@@ -13,7 +15,7 @@
       },
       {
         "file": "fa-solid-900.ttf",
-        "range": "0xf2c9"
+        "range": "0xf2c9,0xf002"
       }
     ]
   }

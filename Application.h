@@ -4,11 +4,14 @@
 #include "Queue.h"
 
 class Application {
-    Queue* _queue;
-    HomeUI _home;
+    Queue _queue;
+    Tasks _tasks;
+    HomeUI* _home;
+    TrelloApi *_api;
 
 public:
-    Application(Queue& queue) : _queue(&queue) {}
+    Application() : _home(nullptr), _api(nullptr) {}
 
     void begin();
+    void process();
 };

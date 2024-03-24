@@ -10,6 +10,8 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 add_subdirectory(lvgl)
 target_include_directories(lvgl PUBLIC ${PROJECT_SOURCE_DIR})
 
+add_subdirectory(lib/cJSON)
+
 FILE(GLOB lv_font_roboto_files lv_font_roboto*.c)
 
 add_executable(

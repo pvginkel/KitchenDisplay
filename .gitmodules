@@ -10,3 +10,10 @@
 [submodule "lv_demos"]
 	path = lv_demos
 	url = https://github.com/lvgl/lv_demos
+[submodule "lib/cJSON"]
+	path = lib/cJSON
+	url = https://github.com/DaveGamble/cJSON.git
+	branch = master
+[submodule "lvgl_windows_simulator"]
+	path = lvgl_windows_simulator
+	url = https://github.com/pvginkel/lv_port_pc_visual_studio.git

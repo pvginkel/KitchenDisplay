@@ -6,6 +6,7 @@ using icu_result = result<T, UErrorCode>;
 string sha1(const string& input);
 icu_result<string> icu_normalize(const string& input);
 icu_result<string> icu_simplify(const string& input);
+string icu_lower(const string& input);
 
 template <typename Result>
 static Result with_mutex(mutex& mutex, function<Result(void)> func) {

@@ -4,6 +4,8 @@
 
 #include <openssl/sha.h>
 
+static icu::Locale LOCALE(ICU_LOCALE);
+
 string sha1(const string& input) {
     unsigned char hash[SHA_DIGEST_LENGTH];
     SHA_CTX sha1;
@@ -50,6 +52,17 @@ icu_result<string> icu_simplify(const string& input) {
 
     std::string result;
     icu_input.toUTF8String(result);
+
+    return result;
+}
+
+string icu_lower(const string& input) {
+    auto icu_input = icu::UnicodeString::fromUTF8(input.c_str());
+
+    auto lower_str = icu_input.toLower(LOCALE);
+
+    std::string result;
+    lower_str.toUTF8String(result);
 
     return result;
 }

@@ -61,7 +61,7 @@ void HomeUI::do_render(lv_obj_t* parent) {
     lv_obj_on_defocused(search, [this] { delete_keyboard(); });
 
     lv_obj_on_clicked(search_button, [this, search_button, search] {
-        _search = lv_textarea_get_text(search);
+        _search = icu_lower(lv_textarea_get_text(search));
 
         _queue->enqueue([this] { render(); });
     });

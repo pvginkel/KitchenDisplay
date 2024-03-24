@@ -18,10 +18,10 @@ bool TrelloCard::has_label(char const *label) const {
 
 bool TrelloCard::is_match(const string &search) {
     if (!_name_simple.has_value()) {
-        _name_simple = icu_simplify(_name).value();
+        _name_simple = icu_lower(icu_simplify(_name).value());
     }
     if (!_description_simple.has_value()) {
-        _description_simple = icu_simplify(_name).value();
+        _description_simple = icu_lower(icu_simplify(_name).value());
     }
 
     return is_match(_name_simple.value(), search) || is_match(_description_simple.value(), search);

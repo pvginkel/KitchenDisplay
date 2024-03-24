@@ -1,11 +1,11 @@
 [
   {
     "name": "lv_font_roboto_{size}",
-    "size": 40,
+    "size": [ 14, 18, 40 ],
     "fonts": [
       {
         "file": "Roboto-Regular.ttf",
-        "range": "0x20-0x7F,0xB0,0x2022"
+        "range": "0x20-0x7F,0xB0,0x2022,0x2018,0x2019"
       },
       {
         "file": "FontAwesome5-Solid+Brands+Regular.woff",
@@ -14,16 +14,6 @@
       {
         "file": "fa-solid-900.ttf",
         "range": "0xf2c9"
-      }
-    ]
-  },
-  {
-    "name": "lv_font_roboto_{size}_digits",
-    "size": 100,
-    "fonts": [
-      {
-        "file": "Roboto-Regular.ttf",
-        "range": "48-57"
       }
     ]
   }

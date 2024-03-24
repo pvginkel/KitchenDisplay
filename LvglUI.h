@@ -3,12 +3,12 @@
 extern "C" {
 // Use the script in the tools folder to update the fonts.
 
+LV_FONT_DECLARE(lv_font_roboto_14);
+LV_FONT_DECLARE(lv_font_roboto_18);
 LV_FONT_DECLARE(lv_font_roboto_40);
-LV_FONT_DECLARE(lv_font_roboto_100_digits);
 }
 
-static constexpr auto NORMAL_FONT = &lv_font_roboto_40;
-static constexpr auto LARGE_DIGITS_FONT = &lv_font_roboto_100_digits;
+static constexpr auto NORMAL_FONT = &lv_font_roboto_18;
 
 void lv_obj_set_bounds(lv_obj_t* obj, int x, int y, int width, int height, lv_text_align_t align);
 

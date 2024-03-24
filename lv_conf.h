@@ -11,6 +11,13 @@
  *    - add the path as include path
  */
 
+#ifdef LV_SIMULATOR
+
+// Redirect to the simulator version of the CONF file.
+#include "lvgl_windows_simulator/LvglWindowsSimulator/lv_conf.h"
+
+#else
+
 /* clang-format off */
 #if 1 /*Set it to "1" to enable content*/
 
@@ -958,3 +965,4 @@
 
 #endif /*End of "Content enable"*/
 
+#endif

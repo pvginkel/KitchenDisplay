@@ -20,7 +20,11 @@ for (const font of fonts) {
     for (const file of font.fonts) {
       args += `--font "${file.file}" --range "${file.range}" `;
     }
-
-    console.log(execSync(`./node_modules/.bin/lv_font_conv ${args}`, { encoding: 'utf-8' }));
+    
+    if (process.platform === "win32") {
+        console.log(execSync(`call ./node_modules/.bin/lv_font_conv.cmd ${args}`, { encoding: 'utf-8' }));
+    } else {
+        console.log(execSync(`./node_modules/.bin/lv_font_conv ${args}`, { encoding: 'utf-8' }));
+    }
   }
 }

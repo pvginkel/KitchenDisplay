@@ -9,7 +9,9 @@ class TrelloCard {
     string _id;
     string _id_list;
     string _name;
+    optional<string> _name_simple;
     string _description;
+    optional<string> _description_simple;
     optional<string> _id_attachment_cover;
     vector<string> _labels;
 
@@ -66,6 +68,5 @@ public:
 private:
     TrelloResult<string> get_file(const string& url, const string& extension, bool force = false);
     TrelloResult<string> get_cached(const string& url);
-    TrelloResult<string> simplify_unicode(const string& str);
     string get_cache_key(const string& url);
 };

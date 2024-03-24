@@ -9,6 +9,7 @@
 #include <sys/stat.h>
 #include <unicode/unistr.h>
 #include <unicode/normlzr.h>
+#include <unicode/translit.h>
 
 #ifndef LV_SIMULATOR
 
@@ -41,6 +42,7 @@
 
 using namespace std;
 
+#include "result.h"
 #include "Callback.h"
 #include "lvgl_events.h"
 #include "support.h"

@@ -21,5 +21,5 @@ add_executable(
     support.cpp TrelloApi.cpp CardUI.cpp HomeUI.cpp LvglUI.cpp MarkdownRenderer.cpp Queue.cpp Tasks.cpp
     ${lv_font_files})
 
-target_link_libraries(main lvgl lvgl::examples lvgl::demos lvgl::thorvg ${SDL2_LIBRARIES} m pthread cmark cjson curl crypto icuuc icui18n)
+target_link_libraries(main lvgl m pthread cmark cjson curl crypto icuuc icui18n)
 add_custom_target(run COMMAND ${EXECUTABLE_OUTPUT_PATH}/main DEPENDS main)

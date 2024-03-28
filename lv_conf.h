@@ -29,7 +29,7 @@
  *====================*/
 
 /*Color depth: 8 (A8), 16 (RGB565), 24 (RGB888), 32 (XRGB8888)*/
-#define LV_COLOR_DEPTH 16
+#define LV_COLOR_DEPTH 32
 
 /*=========================
    STDLIB WRAPPER SETTINGS
@@ -697,7 +697,7 @@
 #define LV_USE_RLOTTIE 0
 
 /*Enable Vector Graphic APIs*/
-#define LV_USE_VECTOR_GRAPHIC  1
+#define LV_USE_VECTOR_GRAPHIC  0
 
 /* Enable ThorVG (vector graphics library) from the src/libs folder */
 #define LV_USE_THORVG_INTERNAL 1
@@ -911,14 +911,14 @@
 *==================*/
 
 /*Enable the examples to be built with the library*/
-#define LV_BUILD_EXAMPLES 1
+#define LV_BUILD_EXAMPLES 0
 
 /*===================
  * DEMO USAGE
  ====================*/
 
 /*Show some widget. It might be required to increase `LV_MEM_SIZE` */
-#define LV_USE_DEMO_WIDGETS 1
+#define LV_USE_DEMO_WIDGETS 0
 #if LV_USE_DEMO_WIDGETS
     #define LV_DEMO_WIDGETS_SLIDESHOW 0
 #endif
@@ -927,13 +927,13 @@
 #define LV_USE_DEMO_KEYPAD_AND_ENCODER 0
 
 /*Benchmark your system*/
-#define LV_USE_DEMO_BENCHMARK 1
+#define LV_USE_DEMO_BENCHMARK 0
 
 /*Render test for each primitives. Requires at least 480x272 display*/
-#define LV_USE_DEMO_RENDER 1
+#define LV_USE_DEMO_RENDER 0
 
 /*Stress test for LVGL*/
-#define LV_USE_DEMO_STRESS 1
+#define LV_USE_DEMO_STRESS 0
 
 /*Music player demo*/
 #define LV_USE_DEMO_MUSIC 0
@@ -946,19 +946,19 @@
 #endif
 
 /*Flex layout demo*/
-#define LV_USE_DEMO_FLEX_LAYOUT     1
+#define LV_USE_DEMO_FLEX_LAYOUT     0
 
 /*Smart-phone like multi-language demo*/
-#define LV_USE_DEMO_MULTILANG       1
+#define LV_USE_DEMO_MULTILANG       0
 
 /*Widget transformation demo*/
-#define LV_USE_DEMO_TRANSFORM       1
+#define LV_USE_DEMO_TRANSFORM       0
 
 /*Demonstrate scroll settings*/
-#define LV_USE_DEMO_SCROLL          1
+#define LV_USE_DEMO_SCROLL          0
 
 /*Vector graphic demo*/
-#define LV_USE_DEMO_VECTOR_GRAPHIC  1
+#define LV_USE_DEMO_VECTOR_GRAPHIC  0
 /*--END OF LV_CONF_H--*/
 
 #endif /*LV_CONF_H*/

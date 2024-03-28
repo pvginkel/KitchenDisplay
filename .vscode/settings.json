@@ -60,6 +60,7 @@
         "thread": "cpp",
         "cinttypes": "cpp",
         "typeinfo": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "lv_demo_vector_graphic.h": "c"
     }
 }

@@ -78,8 +78,11 @@ void HomeUI::do_render(lv_obj_t* parent) {
     lv_obj_remove_style_all(results_cont_columns);
     lv_obj_set_style_pad_column(results_cont_columns, pad, LV_PART_MAIN);
     lv_obj_set_grid_cell(results_cont_columns, LV_GRID_ALIGN_STRETCH, 0, 3, LV_GRID_ALIGN_STRETCH, 1, 1);
-    static int32_t results_cont_columns_col_desc[] = {LV_GRID_FR(1), LV_GRID_FR(1), LV_GRID_TEMPLATE_LAST};
-    assert(size(results_cont_columns_col_desc) - 1 == HOME_UI_COLUMNS);
+    static int32_t* results_cont_columns_col_desc = new int32_t[HOME_UI_COLUMNS + 1];
+    for (auto i = 0; i < HOME_UI_COLUMNS; i++) {
+        results_cont_columns_col_desc[i] = LV_GRID_FR(1);
+    }
+    results_cont_columns_col_desc[HOME_UI_COLUMNS] = LV_GRID_TEMPLATE_LAST;
     static int32_t results_cont_columns_row_desc[] = {LV_GRID_CONTENT, LV_GRID_TEMPLATE_LAST};
     lv_obj_set_grid_dsc_array(results_cont_columns, results_cont_columns_col_desc, results_cont_columns_row_desc);
 

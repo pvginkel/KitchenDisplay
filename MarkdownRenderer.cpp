@@ -16,15 +16,15 @@ MarkdownRenderer *MarkdownRenderer::get_default() {
     if (!DEFAULT) {
         DEFAULT = new MarkdownRenderer();
 
-        DEFAULT->set_code_block_style(create_font_style(&lv_font_mono_32));
-        DEFAULT->set_heading_style(1, create_font_style(&lv_font_sans_58_bold));
-        DEFAULT->set_heading_style(2, create_font_style(&lv_font_sans_50_bold));
-        DEFAULT->set_heading_style(3, create_font_style(&lv_font_sans_42_bold));
-        DEFAULT->set_heading_style(4, create_font_style(&lv_font_sans_36_bold));
-        DEFAULT->set_heading_style(5, create_font_style(&lv_font_sans_36_bold));
-        DEFAULT->set_paragraph_bold_style(create_font_style(&lv_font_sans_36_bold));
-        DEFAULT->set_paragraph_italic_style(create_font_style(&lv_font_sans_36_italic));
-        DEFAULT->set_paragraph_bold_italic_style(create_font_style(&lv_font_sans_36_bold_italic));
+        DEFAULT->set_code_block_style(create_font_style(&lv_font_mono_25));
+        DEFAULT->set_heading_style(1, create_font_style(&lv_font_sans_50_bold));
+        DEFAULT->set_heading_style(2, create_font_style(&lv_font_sans_40_bold));
+        DEFAULT->set_heading_style(3, create_font_style(&lv_font_sans_34_bold));
+        DEFAULT->set_heading_style(4, create_font_style(&lv_font_sans_28_bold));
+        DEFAULT->set_heading_style(5, create_font_style(&lv_font_sans_28_bold));
+        DEFAULT->set_paragraph_bold_style(create_font_style(&lv_font_sans_28_bold));
+        DEFAULT->set_paragraph_italic_style(create_font_style(&lv_font_sans_28_italic));
+        DEFAULT->set_paragraph_bold_italic_style(create_font_style(&lv_font_sans_28_bold_italic));
 
         auto block_quote_style = new lv_style_t();
         lv_style_init(block_quote_style);

@@ -6,7 +6,7 @@ if [ ! -d build ]; then mkdir build; fi
 
 cd build
 if grep -q 'Raspbian' /etc/os-release; then
-  cmake
+  cmake ..
   make
 else
   cmake -DCMAKE_BUILD_TYPE=Debug ..

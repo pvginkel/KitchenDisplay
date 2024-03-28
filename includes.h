@@ -7,10 +7,10 @@
 #include <math.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <unicode/unistr.h>
+#include <unicode/locid.h>
 #include <unicode/normlzr.h>
 #include <unicode/translit.h>
-#include <unicode/locid.h>
+#include <unicode/unistr.h>
 
 #ifndef LV_SIMULATOR
 
@@ -27,13 +27,14 @@
 #include <filesystem>
 #include <fstream>
 #include <functional>
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 #include <map>
 #include <mutex>
 #include <optional>
 #include <queue>
 #include <sstream>
+#include <stack>
 #include <string>
 #include <thread>
 #include <vector>
@@ -43,11 +44,11 @@
 
 using namespace std;
 
-#include "result.h"
 #include "Callback.h"
-#include "lvgl_events.h"
-#include "support.h"
 #include "Messages.h"
+#include "lvgl_events.h"
+#include "result.h"
+#include "support.h"
 #include "fonts.h"
 
 #ifdef LV_SIMULATOR

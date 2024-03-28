@@ -99,9 +99,12 @@ void HomeUI::do_render(lv_obj_t* parent) {
             continue;
         }
 
+        auto card_id = card.id();
+
         auto obj = lv_obj_create(results_cont_column[(index++) % 3]);
         lv_obj_set_style_pad_all(obj, pad, LV_PART_MAIN);
         lv_obj_set_size(obj, LV_PCT(100), LV_SIZE_CONTENT);
+        lv_obj_on_clicked(obj, [this, card_id] { open_card(card_id); });
 
         auto card_cont = lv_obj_create(obj);
         lv_obj_remove_style_all(card_cont);
@@ -157,7 +160,7 @@ void HomeUI::load_attachment_covers(vector<TrelloCard> cards) {
                 if (attachment.is_ok()) {
                     auto file = _api->get_image_file(attachment.value().url(), pw(33), nullopt, false);
                     if (file.is_ok()) {
-                        string card_id = card.id();
+                        auto card_id = card.id();
 
                         _queue->enqueue([this, card_id, file] {
                             _card_attachment_cover_files[card_id] = file.value();
@@ -185,4 +188,13 @@ void HomeUI::delete_keyboard() {
             _keyboard = nullptr;
         }
     });
+}
+
+void HomeUI::open_card(const string& card_id) {
+    if (_cards.is_ok()) {
+        auto card = ranges::find_if(_cards.value(), [card_id](auto card) { return card.id() == card_id; });
+        if (card != _cards.value().end()) {
+            _card_opened.call(*card);
+        }
+    }
 }

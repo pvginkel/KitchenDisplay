@@ -17,3 +17,6 @@
 [submodule "lvgl_windows_simulator"]
 	path = lvgl_windows_simulator
 	url = https://github.com/pvginkel/lv_port_pc_visual_studio.git
+[submodule "lib/cmark"]
+	path = lib/cmark
+	url = https://github.com/commonmark/cmark.git

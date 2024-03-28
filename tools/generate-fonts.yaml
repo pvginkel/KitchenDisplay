@@ -2,7 +2,7 @@
 
 - name: 'lv_font_sans_{size}'
   size:
-    - 18
+    - 36
   fonts:
     - file: Roboto-Regular.ttf
       range: 0x20-0xFF,0x2022,0x2018,0x2019,0x2022
@@ -17,28 +17,28 @@
       range: 0xf2c9,0xf002,0xf060
 - name: 'lv_font_sans_{size}_bold'
   size:
-    - 18
-    - 22
-    - 30
-    - 38
+    - 36
+    - 44
+    - 60
+    - 76
   fonts:
     - file: Roboto-Bold.ttf
       range: 0x20-0xFF,0x2022,0x2018,0x2019,0x2022
 - name: 'lv_font_sans_{size}_italic'
   size:
-    - 18
+    - 36
   fonts:
     - file: Roboto-Italic.ttf
       range: 0x20-0xFF,0x2022,0x2018,0x2019,0x2022
 - name: 'lv_font_sans_{size}_bold_italic'
   size:
-    - 18
+    - 36
   fonts:
     - file: Roboto-BoldItalic.ttf
       range: 0x20-0xFF,0x2022,0x2018,0x2019,0x2022
 - name: 'lv_font_mono_{size}'
   size:
-    - 16
+    - 32
   fonts:
     - file: CascadiaMono-Regular.ttf
       range: 0x20-0xFF,0x2022,0x2018,0x2019,0x2022

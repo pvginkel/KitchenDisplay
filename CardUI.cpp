@@ -23,7 +23,7 @@ void CardUI::do_render(lv_obj_t* parent) {
     auto title = lv_label_create(outer_cont);
     lv_label_set_long_mode(title, LV_LABEL_LONG_WRAP);
     lv_obj_set_grid_cell(title, LV_GRID_ALIGN_STRETCH, 0, 1, LV_GRID_ALIGN_START, 0, 1);
-    lv_obj_set_style_text_font(title, &lv_font_sans_38_bold, LV_PART_MAIN);
+    lv_obj_set_style_text_font(title, &lv_font_sans_76_bold, LV_PART_MAIN);
     lv_label_set_text(title, card.name().c_str());
 
     if (card.id_attachment_cover().has_value()) {

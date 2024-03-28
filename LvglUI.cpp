@@ -32,9 +32,7 @@ bool LvglUICookie::is_valid() const { return LvglUI::current_cookie == _cookie; 
 
 LvglUI::~LvglUI() { remove_loading_ui(); }
 
-void LvglUI::begin() {
-    do_begin();
-}
+void LvglUI::begin() { do_begin(); }
 
 void LvglUI::render() {
     current_cookie++;
@@ -109,7 +107,7 @@ void LvglUI::reset_outer_container_styles(lv_obj_t* cont) {
     auto column_pad = lv_obj_get_style_pad_column(cont, LV_PART_MAIN);
     lv_obj_remove_style_all(cont);
     lv_obj_set_size(cont, LV_PCT(100), LV_PCT(100));
-    lv_obj_set_style_pad_row(cont, row_pad, LV_PART_MAIN);
-    lv_obj_set_style_pad_column(cont, column_pad, LV_PART_MAIN);
-    lv_obj_set_style_pad_all(cont, row_pad, LV_PART_MAIN);
+    lv_obj_set_style_pad_row(cont, lv_dpx(PADDING), LV_PART_MAIN);
+    lv_obj_set_style_pad_column(cont, lv_dpx(PADDING), LV_PART_MAIN);
+    lv_obj_set_style_pad_all(cont, lv_dpx(PADDING), LV_PART_MAIN);
 }

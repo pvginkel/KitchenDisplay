@@ -51,9 +51,5 @@ using namespace std;
 #include "fonts.h"
 #include "lvgl_events.h"
 #include "result.h"
+#include "settings.h"
 #include "support.h"
-
-constexpr char const* BOARD_ID = "5c693da426bbbc593b624654";
-constexpr char const* SRVMAIN = "192.168.178.3";
-constexpr char const* FAVORITE_LABEL = "FAVORIET";
-constexpr char const* ICU_LOCALE = "nl-NL";

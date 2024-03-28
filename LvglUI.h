@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-static constexpr auto NORMAL_FONT = &lv_font_sans_18;
+static constexpr auto NORMAL_FONT = &lv_font_sans_36;
 
 void lv_obj_set_bounds(lv_obj_t* obj, int x, int y, int width, int height, lv_text_align_t align);
 

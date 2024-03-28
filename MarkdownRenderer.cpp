@@ -41,7 +41,7 @@ MarkdownRenderer *MarkdownRenderer::get_default() {
     return DEFAULT;
 }
 
-lv_obj_t* MarkdownRenderer::render(lv_obj_t *parent, const string &text, int options) {
+lv_obj_t *MarkdownRenderer::render(lv_obj_t *parent, const string &text, int options) {
     assert(parent);
 
     auto doc = cmark_parse_document(text.c_str(), text.size(), 0);
@@ -185,7 +185,7 @@ void MarkdownRenderer::render_node(cmark_node *node, cmark_event_type ev_type, i
                 if (state.list_type == CMARK_BULLET_LIST) {
                     lv_label_set_text(list_indicator, "\xe2\x80\xa2");
                 } else {
-                    auto text = format("{}.", state.list_start++);
+                    auto text = strformat("%d.", state.list_start++);
                     lv_label_set_text(list_indicator, text.c_str());
                 }
             }

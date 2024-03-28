@@ -4,9 +4,20 @@
 
 #include "MarkdownTestUI.h"
 
+static const char* TAG = "Application";
+
 void Application::begin() {
-    auto api_key = string(getenv("TRELLO_API_KEY"));
-    auto user_token = string(getenv("TRELLO_USER_TOKEN"));
+    auto api_key = getenv("TRELLO_API_KEY");
+    auto user_token = getenv("TRELLO_USER_TOKEN");
+
+    if (!api_key) {
+        LOGE(TAG, "TRELLO_API_KEY environment variable not set");
+        exit(1);
+    }
+    if (!user_token) {
+        LOGE(TAG, "TRELLO_USER_TOKEN environment variable not set");
+        exit(1);
+    }
 
     _api = new TrelloApi(api_key, user_token);
 

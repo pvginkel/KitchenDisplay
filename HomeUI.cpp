@@ -84,7 +84,7 @@ void HomeUI::do_render(lv_obj_t* parent) {
     lv_obj_set_grid_dsc_array(results_cont_columns, results_cont_columns_col_desc, results_cont_columns_row_desc);
 
     lv_obj_t* results_cont_column[3];
-    for (auto i = 0; i < ARRAYSIZE(results_cont_column); i++) {
+    for (auto i = 0; i < size(results_cont_column); i++) {
         results_cont_column[i] = lv_obj_create(results_cont_columns);
         lv_obj_remove_style_all(results_cont_column[i]);
         lv_obj_set_style_pad_row(results_cont_column[i], pad, LV_PART_MAIN);
@@ -217,7 +217,8 @@ void HomeUI::delete_keyboard() {
 
 void HomeUI::open_card(const string& card_id) {
     if (_cards.is_ok()) {
-        auto card = ranges::find_if(_cards.value(), [card_id](auto card) { return card.id() == card_id; });
+        auto card = find_if(_cards.value().begin(), _cards.value().end(),
+                            [card_id](auto card) { return card.id() == card_id; });
         if (card != _cards.value().end()) {
             _card_opened.call(*card);
         }

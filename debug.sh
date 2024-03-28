@@ -7,4 +7,4 @@ set -e
 cd bin
 
 sudo fbset -fb /dev/fb0 -g 1024 600 1024 600 32
-sudo ./main
+sudo gdb -x ../commands.gdb --quiet

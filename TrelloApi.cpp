@@ -52,7 +52,7 @@ TrelloApi::TrelloApi(string api_key, string user_token)
 
 TrelloResult<vector<TrelloCard>> TrelloApi::get_board_cards(const string &id) {
     string data;
-    attempt_res(data, get_cached(format("1/boards/{}/cards", id)));
+    attempt_res(data, get_cached(strformat("1/boards/%s/cards", id.c_str())));
 
     cJSON_Data json(cJSON_Parse(data.c_str()));
     if (!*json) {
@@ -120,7 +120,7 @@ TrelloResult<vector<TrelloCard>> TrelloApi::get_board_cards(const string &id) {
 
 TrelloResult<TrelloCardAttachment> TrelloApi::get_card_attachment(const string &card_id, const string &attachment_id) {
     string data;
-    attempt_res(data, get_cached(format("1/cards/{}/attachments/{}", card_id, attachment_id)));
+    attempt_res(data, get_cached(strformat("1/cards/%s/attachments/%s", card_id.c_str(), attachment_id.c_str())));
 
     cJSON_Data json(cJSON_Parse(data.c_str()));
     if (!*json) {
@@ -160,7 +160,8 @@ string TrelloApi::get_cache_key(const string &url) { return sha1(url); }
 TrelloResult<string> TrelloApi::get_file(const string &url, bool force) { return get_file(url, ".cache", force); }
 
 TrelloResult<string> TrelloApi::get_file(const string &url, const string &extension, bool force) {
-    auto file_name = format("{}/{}{}", _cache_path, get_cache_key(url), extension);
+    auto cache_key = get_cache_key(url);
+    auto file_name = strformat("%s/%s%s", _cache_path.c_str(), cache_key.c_str(), extension.c_str());
     if (filesystem::exists(file_name)) {
         if (force) {
             // Force the cache to be invalidated.
@@ -175,8 +176,8 @@ TrelloResult<string> TrelloApi::get_file(const string &url, const string &extens
         return TrelloError::Unknown;
     }
 
-    auto authorization_header =
-        format(R"(Authorization: OAuth oauth_consumer_key="{}", oauth_token="{}")", _api_key, _user_token);
+    auto authorization_header = strformat(R"(Authorization: OAuth oauth_consumer_key="%s", oauth_token="%s")",
+                                          _api_key.c_str(), _user_token.c_str());
 
     auto headers = curl_slist_append(nullptr, authorization_header.c_str());
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
@@ -185,7 +186,7 @@ TrelloResult<string> TrelloApi::get_file(const string &url, const string &extens
 
     auto full_url = url;
     if (full_url.find("://") == string::npos) {
-        full_url = format("https://api.trello.com/{}", full_url);
+        full_url = strformat("https://api.trello.com/%s", full_url.c_str());
     }
 
     curl_easy_setopt(curl, CURLOPT_URL, full_url.c_str());
@@ -235,14 +236,13 @@ TrelloResult<string> TrelloApi::get_image_file(const string &url, optional<int> 
         return TrelloError::Unknown;
     }
 
-    auto new_url = format("http://{}/lvgl/get_image.php?url={}&headers=authorization",
-                          SRVMAIN, *url_encoded);
+    auto new_url = strformat("http://%s/lvgl/get_image.php?url=%s&headers=authorization", SRVMAIN, *url_encoded);
 
     if (width.has_value()) {
-        new_url += format("&width={}", width.value());
+        new_url += strformat("&width=%d", width.value());
     }
     if (height.has_value()) {
-        new_url += format("&height={}", height.value());
+        new_url += strformat("&height=%d", height.value());
     }
 
     return get_file(new_url, ".bin", force);

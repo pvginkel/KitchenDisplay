@@ -6,6 +6,33 @@
 
 static icu::Locale LOCALE(ICU_LOCALE);
 
+string strformat(const char* fmt, ...) {
+    va_list ap;
+
+    va_start(ap, fmt);
+    auto length = vsnprintf(nullptr, 0, fmt, ap);
+    va_end(ap);
+
+    if (length < 0) {
+        abort();
+    }
+
+    auto buffer = (char*)malloc(length + 1);
+    if (!buffer) {
+        abort();
+    }
+
+    va_start(ap, fmt);
+    vsprintf(buffer, fmt, ap);
+    va_end(ap);
+
+    auto result = string(buffer, length);
+
+    free(buffer);
+
+    return result;
+}
+
 string sha1(const string& input) {
     unsigned char hash[SHA_DIGEST_LENGTH];
     SHA_CTX sha1;

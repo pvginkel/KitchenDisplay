@@ -33,6 +33,7 @@
 #include <mutex>
 #include <optional>
 #include <queue>
+#include <ranges>
 #include <sstream>
 #include <stack>
 #include <string>
@@ -46,18 +47,13 @@ using namespace std;
 
 #include "Callback.h"
 #include "Messages.h"
+#include "RefCounted.h"
+#include "fonts.h"
 #include "lvgl_events.h"
 #include "result.h"
 #include "support.h"
-#include "fonts.h"
-#include "RefCounted.h"
-
-#ifdef LV_SIMULATOR
 
 constexpr char const* BOARD_ID = "5c693da426bbbc593b624654";
-
-#endif
-
 constexpr char const* SRVMAIN = "192.168.178.3";
 constexpr char const* FAVORITE_LABEL = "FAVORIET";
 constexpr char const* ICU_LOCALE = "nl-NL";

@@ -14,10 +14,12 @@ void Device::begin() {
     lv_evdev_create(LV_INDEV_TYPE_KEYPAD, "/dev/input/event0");
     auto mouse_indev = lv_evdev_create(LV_INDEV_TYPE_POINTER, "/dev/input/event2");
 
+#if !NDEBUG
     LV_IMG_DECLARE(mouse_cursor_icon);
     auto cursor_obj = lv_image_create(lv_screen_active());
     lv_image_set_src(cursor_obj, &mouse_cursor_icon);
     lv_indev_set_cursor(mouse_indev, cursor_obj);
+#endif
 }
 
 void Device::set_fbcon_cursor(bool blank) {

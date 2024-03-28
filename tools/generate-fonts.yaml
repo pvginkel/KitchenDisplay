@@ -18,9 +18,9 @@
 - name: 'lv_font_sans_{size}_bold'
   size:
     - 36
-    - 44
-    - 60
-    - 76
+    - 42
+    - 50
+    - 58
   fonts:
     - file: Roboto-Bold.ttf
       range: 0x20-0xFF,0x2022,0x2018,0x2019,0x2022

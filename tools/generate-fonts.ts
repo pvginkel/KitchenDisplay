@@ -1,6 +1,13 @@
 import { execSync } from 'child_process';
 import * as fs from 'fs';
 import * as yaml from 'js-yaml';
+import { exit } from 'process';
+
+for (const fileName of fs.readdirSync("..")) {
+  if (/^lv_font_.*\.c$/.test(fileName)) {
+    fs.rmSync(`../${fileName}`);
+  }
+}
 
 const fonts: [{ name: string; size: number | [number]; fonts: [{ file: string; range: string }] }] = <any>(
   yaml.load(fs.readFileSync('generate-fonts.yaml', 'utf-8').replace(/^\s*\/\/.*$/gm, ''))

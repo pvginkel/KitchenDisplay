@@ -17,9 +17,9 @@ MarkdownRenderer *MarkdownRenderer::get_default() {
         DEFAULT = new MarkdownRenderer();
 
         DEFAULT->set_code_block_style(create_font_style(&lv_font_mono_32));
-        DEFAULT->set_heading_style(1, create_font_style(&lv_font_sans_76_bold));
-        DEFAULT->set_heading_style(2, create_font_style(&lv_font_sans_60_bold));
-        DEFAULT->set_heading_style(3, create_font_style(&lv_font_sans_44_bold));
+        DEFAULT->set_heading_style(1, create_font_style(&lv_font_sans_58_bold));
+        DEFAULT->set_heading_style(2, create_font_style(&lv_font_sans_50_bold));
+        DEFAULT->set_heading_style(3, create_font_style(&lv_font_sans_42_bold));
         DEFAULT->set_heading_style(4, create_font_style(&lv_font_sans_36_bold));
         DEFAULT->set_heading_style(5, create_font_style(&lv_font_sans_36_bold));
         DEFAULT->set_paragraph_bold_style(create_font_style(&lv_font_sans_36_bold));

@@ -5,5 +5,10 @@ set -e
 if [ ! -d build ]; then mkdir build; fi
 
 cd build
-cmake -DCMAKE_BUILD_TYPE=Debug ..
-make -j
+if grep -q 'Raspbian' /etc/os-release; then
+  make
+else
+  cmake -DCMAKE_BUILD_TYPE=Debug ..
+  make -j
+fi
+

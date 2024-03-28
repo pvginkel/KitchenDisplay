@@ -11,8 +11,15 @@ void Device::begin() {
     auto disp = lv_linux_fbdev_create();
     lv_linux_fbdev_set_file(disp, "/dev/fb0");
 
+#if NDEBUG
+    // Raspbian config.
+    lv_evdev_create(LV_INDEV_TYPE_KEYPAD, "/dev/input/event1");
+    auto mouse_indev = lv_evdev_create(LV_INDEV_TYPE_POINTER, "/dev/input/event0");
+#else
+    // Linux ESXi config.
     lv_evdev_create(LV_INDEV_TYPE_KEYPAD, "/dev/input/event0");
     auto mouse_indev = lv_evdev_create(LV_INDEV_TYPE_POINTER, "/dev/input/event2");
+#endif
 
 #if !NDEBUG
     LV_IMG_DECLARE(mouse_cursor_icon);

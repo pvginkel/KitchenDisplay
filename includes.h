@@ -48,6 +48,7 @@ using namespace std;
 #include "lvgl_events.h"
 #include "support.h"
 #include "Messages.h"
+#include "fonts.h"
 
 #ifdef LV_SIMULATOR
 

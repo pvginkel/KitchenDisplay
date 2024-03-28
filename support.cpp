@@ -2,7 +2,7 @@
 
 #include "support.h"
 
-#include <openssl/sha.h>
+#include <openssl/evp.h>
 
 static icu::Locale LOCALE(ICU_LOCALE);
 
@@ -34,14 +34,17 @@ string strformat(const char* fmt, ...) {
 }
 
 string sha1(const string& input) {
-    unsigned char hash[SHA_DIGEST_LENGTH];
-    SHA_CTX sha1;
-    SHA1_Init(&sha1);
-    SHA1_Update(&sha1, input.c_str(), input.size());
-    SHA1_Final(hash, &sha1);
+    unsigned char hash[EVP_MAX_MD_SIZE];
+    unsigned int hash_length = 0;
+
+    auto sha1 = EVP_MD_CTX_new();
+    EVP_DigestInit_ex(sha1, EVP_sha1(), nullptr);
+    EVP_DigestUpdate(sha1, input.c_str(), input.size());
+    EVP_DigestFinal_ex(sha1, hash, &hash_length);
+    EVP_MD_CTX_free(sha1);
 
     std::stringstream ss;
-    for (int i = 0; i < SHA_DIGEST_LENGTH; i++) {
+    for (unsigned int i = 0; i < hash_length; i++) {
         ss << std::hex << std::setw(2) << std::setfill('0') << (int)hash[i];
     }
     return ss.str();

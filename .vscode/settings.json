@@ -61,6 +61,7 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp",
         "filesystem": "cpp",
-        "lv_demo_vector_graphic.h": "c"
+        "lv_demo_vector_graphic.h": "c",
+        "iomanip": "cpp"
     }
 }

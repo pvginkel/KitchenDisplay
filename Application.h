@@ -17,6 +17,7 @@ public:
     void begin();
     void process();
 
-    private:
+private:
     void open_card(const TrelloCard& card);
+    void open_home();
 };

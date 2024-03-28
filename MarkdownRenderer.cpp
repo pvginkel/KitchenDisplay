@@ -10,7 +10,38 @@ constexpr auto STYLE_STRONG = 1;
 constexpr auto STYLE_EMPH = 2;
 constexpr auto STYLE_CODE = 4;
 
-void MarkdownRenderer::render(lv_obj_t *parent, const string &text) {
+MarkdownRenderer *MarkdownRenderer::DEFAULT = nullptr;
+
+MarkdownRenderer *MarkdownRenderer::get_default() {
+    if (!DEFAULT) {
+        DEFAULT = new MarkdownRenderer();
+
+        DEFAULT->set_code_block_style(create_font_style(&lv_font_mono_16));
+        DEFAULT->set_heading_style(1, create_font_style(&lv_font_sans_38_bold));
+        DEFAULT->set_heading_style(2, create_font_style(&lv_font_sans_30_bold));
+        DEFAULT->set_heading_style(3, create_font_style(&lv_font_sans_22_bold));
+        DEFAULT->set_heading_style(4, create_font_style(&lv_font_sans_18_bold));
+        DEFAULT->set_heading_style(5, create_font_style(&lv_font_sans_18_bold));
+        DEFAULT->set_paragraph_bold_style(create_font_style(&lv_font_sans_18_bold));
+        DEFAULT->set_paragraph_italic_style(create_font_style(&lv_font_sans_18_italic));
+        DEFAULT->set_paragraph_bold_italic_style(create_font_style(&lv_font_sans_18_bold_italic));
+
+        auto block_quote_style = new lv_style_t();
+        lv_style_init(block_quote_style);
+        lv_style_set_pad_left(block_quote_style, lv_dpx(10));
+        lv_style_set_pad_top(block_quote_style, lv_dpx(5));
+        lv_style_set_pad_bottom(block_quote_style, lv_dpx(5));
+        lv_style_set_border_side(block_quote_style, LV_BORDER_SIDE_LEFT);
+        lv_style_set_border_width(block_quote_style, lv_dpx(3));
+        lv_style_set_margin_top(block_quote_style, lv_dpx(5));
+        lv_style_set_margin_bottom(block_quote_style, lv_dpx(5));
+        DEFAULT->set_block_quote_style(block_quote_style);
+    }
+
+    return DEFAULT;
+}
+
+lv_obj_t* MarkdownRenderer::render(lv_obj_t *parent, const string &text, int options) {
     assert(parent);
 
     auto doc = cmark_parse_document(text.c_str(), text.size(), 0);
@@ -19,12 +50,14 @@ void MarkdownRenderer::render(lv_obj_t *parent, const string &text) {
     lv_obj_set_size(cont, LV_PCT(100), LV_PCT(100));
     lv_obj_set_flex_flow(cont, LV_FLEX_FLOW_COLUMN);
 
-    render_doc(cont, doc);
+    render_doc(cont, doc, options);
 
     cmark_node_free(doc);
+
+    return cont;
 }
 
-void MarkdownRenderer::render_doc(lv_obj_t *cont, cmark_node *root) {
+void MarkdownRenderer::render_doc(lv_obj_t *cont, cmark_node *root, int options) {
     _state.push_back(State{
         .type = StateType::Root,
         .cont = cont,
@@ -35,7 +68,7 @@ void MarkdownRenderer::render_doc(lv_obj_t *cont, cmark_node *root) {
     cmark_event_type ev_type;
     while ((ev_type = cmark_iter_next(iter)) != CMARK_EVENT_DONE) {
         auto cur = cmark_iter_get_node(iter);
-        render_node(cur, ev_type);
+        render_node(cur, ev_type, options);
     }
 
     cmark_iter_free(iter);
@@ -43,7 +76,7 @@ void MarkdownRenderer::render_doc(lv_obj_t *cont, cmark_node *root) {
     _state.pop_back();
 }
 
-void MarkdownRenderer::render_node(cmark_node *node, cmark_event_type ev_type) {
+void MarkdownRenderer::render_node(cmark_node *node, cmark_event_type ev_type, int options) {
     const auto entering = ev_type == CMARK_EVENT_ENTER;
 
     switch (cmark_node_get_type(node)) {
@@ -144,7 +177,8 @@ void MarkdownRenderer::render_node(cmark_node *node, cmark_event_type ev_type) {
                 auto list_indicator = lv_label_create(get_cont());
                 lv_obj_set_grid_cell(list_indicator, LV_GRID_ALIGN_STRETCH, 0, 1, LV_GRID_ALIGN_START, row, 1);
                 lv_obj_set_size(list_indicator, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
-                lv_obj_set_style_margin_top(list_indicator, lv_obj_get_style_margin_top(cont, LV_PART_MAIN), LV_PART_MAIN);
+                lv_obj_set_style_margin_top(list_indicator, lv_obj_get_style_margin_top(cont, LV_PART_MAIN),
+                                            LV_PART_MAIN);
 
                 assert(state.type == StateType::List);
 
@@ -230,7 +264,7 @@ void MarkdownRenderer::render_node(cmark_node *node, cmark_event_type ev_type) {
             break;
 
         case CMARK_NODE_SOFTBREAK:
-            if (_options & CMARK_OPT_HARDBREAKS) {
+            if (options & CMARK_OPT_HARDBREAKS) {
                 top_state().buffer += "\n";
             } else {
                 top_state().buffer += " ";
@@ -355,3 +389,10 @@ void MarkdownRenderer::start_style(int style) {
 }
 
 void MarkdownRenderer::end_style() { top_state().had_style = true; }
+
+lv_style_t *MarkdownRenderer::create_font_style(const lv_font_t *font) {
+    auto style = new lv_style_t();
+    lv_style_init(style);
+    lv_style_set_text_font(style, font);
+    return style;
+}

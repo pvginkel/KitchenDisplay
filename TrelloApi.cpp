@@ -235,7 +235,7 @@ TrelloResult<string> TrelloApi::get_image_file(const string &url, optional<int> 
         return TrelloError::Unknown;
     }
 
-    auto new_url = format("http://{}/lvgl/get_image.php?url={}&headers=authorization&format=bin_888&cf=true_color",
+    auto new_url = format("http://{}/lvgl/get_image.php?url={}&headers=authorization",
                           SRVMAIN, *url_encoded);
 
     if (width.has_value()) {

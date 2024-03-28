@@ -9,13 +9,13 @@ icu_result<string> icu_simplify(const string& input);
 string icu_lower(const string& input);
 
 template <typename Result>
-static Result with_mutex(mutex& mutex, function<Result(void)> func) {
+static Result with_mutex(mutex& mutex, function<Result()> func) {
     auto guard = lock_guard<std::mutex>(mutex);
 
     return func();
 }
 
-static void with_mutex(mutex& mutex, function<void(void)> func) {
+static void with_mutex(mutex& mutex, function<void()> func) {
     auto guard = lock_guard<std::mutex>(mutex);
 
     func();

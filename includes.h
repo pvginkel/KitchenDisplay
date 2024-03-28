@@ -50,6 +50,7 @@ using namespace std;
 #include "result.h"
 #include "support.h"
 #include "fonts.h"
+#include "RefCounted.h"
 
 #ifdef LV_SIMULATOR
 

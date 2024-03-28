@@ -6,6 +6,8 @@ constexpr auto CIRCLES = 11;
 constexpr auto CIRCLES_RADIUS = 10;
 constexpr auto CIRCLE_RADIUS = 4;
 
+uint32_t LvglUI::current_cookie = 0;
+
 void lv_obj_set_bounds(lv_obj_t* obj, int x, int y, int width, int height, lv_text_align_t align) {
     lv_obj_set_size(obj, width, height);
 
@@ -26,18 +28,17 @@ void lv_obj_set_bounds(lv_obj_t* obj, int x, int y, int width, int height, lv_te
     lv_obj_set_y(obj, y - height / 2);
 }
 
-LvglUI::LvglUI() : _screen_width(), _screen_height() {}
+bool LvglUICookie::is_valid() const { return LvglUI::current_cookie == _cookie; }
 
 LvglUI::~LvglUI() { remove_loading_ui(); }
 
 void LvglUI::begin() {
-    _screen_width = LV_HOR_RES;
-    _screen_height = LV_VER_RES;
-
     do_begin();
 }
 
 void LvglUI::render() {
+    current_cookie++;
+
     auto parent = lv_screen_active();
 
     lv_obj_clean(parent);
@@ -101,4 +102,14 @@ void LvglUI::remove_loading_ui() {
     lv_anim_del(this, loading_animation_callback);
 
     _loading_circles.clear();
+}
+
+void LvglUI::reset_outer_container_styles(lv_obj_t* cont) {
+    auto row_pad = lv_obj_get_style_pad_row(cont, LV_PART_MAIN);
+    auto column_pad = lv_obj_get_style_pad_column(cont, LV_PART_MAIN);
+    lv_obj_remove_style_all(cont);
+    lv_obj_set_size(cont, LV_PCT(100), LV_PCT(100));
+    lv_obj_set_style_pad_row(cont, row_pad, LV_PART_MAIN);
+    lv_obj_set_style_pad_column(cont, column_pad, LV_PART_MAIN);
+    lv_obj_set_style_pad_all(cont, row_pad, LV_PART_MAIN);
 }

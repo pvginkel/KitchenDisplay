@@ -18,7 +18,8 @@ class MarkdownRenderer {
         bool style_invalid;
     };
 
-    int _options;
+    static MarkdownRenderer* DEFAULT;
+
     vector<State> _state;
     lv_style_t* _block_quote_style;
     map<int, lv_style_t*> _heading_styles;
@@ -30,9 +31,10 @@ class MarkdownRenderer {
     lv_style_t* _paragraph_bold_italic_style;
 
 public:
-    MarkdownRenderer(int options = CMARK_OPT_DEFAULT)
-        : _options(options),
-          _block_quote_style(nullptr),
+    static MarkdownRenderer* get_default();
+
+    MarkdownRenderer()
+        : _block_quote_style(nullptr),
           _code_block_style(nullptr),
           _thematic_break_style(nullptr),
           _paragraph_style(nullptr),
@@ -40,7 +42,7 @@ public:
           _paragraph_italic_style(nullptr),
           _paragraph_bold_italic_style(nullptr) {}
 
-    void render(lv_obj_t* parent, const string& text);
+    lv_obj_t* render(lv_obj_t* parent, const string& text, int options = CMARK_OPT_DEFAULT);
     void set_block_quote_style(lv_style_t* style) { _block_quote_style = style; }
     void set_heading_style(int level, lv_style_t* style) { _heading_styles[level] = style; }
     void set_code_block_style(lv_style_t* style) { _code_block_style = style; }
@@ -51,12 +53,13 @@ public:
     void set_paragraph_bold_italic_style(lv_style_t* style) { _paragraph_bold_italic_style = style; }
 
 private:
-    void render_doc(lv_obj_t* cont, cmark_node* doc);
-    void render_node(cmark_node* cur, cmark_event_type ev_type);
+    void render_doc(lv_obj_t* cont, cmark_node* doc, int options);
+    void render_node(cmark_node* cur, cmark_event_type ev_type, int options);
     lv_obj_t* get_cont();
     lv_obj_t* create_label(lv_style_t* style = nullptr);
     void append_text(const char* text);
     void start_style(int style);
     void end_style();
     State& top_state() { return _state[_state.size() - 1]; }
+    static lv_style_t* create_font_style(const lv_font_t* font);
 };

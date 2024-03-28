@@ -1,6 +1,6 @@
 ﻿#include "includes.h"
 
-class LvglEventManager {
+class LvglEventManager : public RefCounted {
     map<lv_event_code_t, Callback<void>> _event_map;
 
 public:
@@ -8,6 +8,9 @@ public:
 
     static void cb(lv_event_t* event) {
         auto self = (LvglEventManager*)lv_event_get_user_data(event);
+
+        self->add_ref();
+
         auto event_code = lv_event_get_code(event);
         auto it = self->_event_map.find(event_code);
         if (it != self->_event_map.end()) {
@@ -15,8 +18,10 @@ public:
         }
 
         if (event_code == LV_EVENT_DELETE) {
-            delete self;
+            self->remove_ref();
         }
+
+        self->remove_ref();
     }
 };
 

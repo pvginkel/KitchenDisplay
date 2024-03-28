@@ -9,6 +9,16 @@ void HomeUI::do_render(lv_obj_t* parent) {
         return;
     }
 
+    if (false) {
+        auto oi = 1;
+        for (auto o : _cards.value()) {
+            if (o.has_label(FAVORITE_LABEL) && oi-- == 0) {
+                open_card(o.id());
+                return;
+            }
+        }
+    }
+
     _keyboard = nullptr;
 
     _card_attachment_cover_images.clear();
@@ -19,10 +29,7 @@ void HomeUI::do_render(lv_obj_t* parent) {
     // the bottom.
 
     auto outer_cont = lv_obj_create(parent);
-    lv_obj_set_size(outer_cont, LV_PCT(100), LV_PCT(100));
-    lv_obj_set_style_margin_all(outer_cont, pad, LV_PART_MAIN);
-    lv_obj_set_pos(outer_cont, pad, pad);
-    lv_obj_set_style_pad_all(outer_cont, pad, LV_PART_MAIN);
+    reset_outer_container_styles(outer_cont);
     static int32_t outer_cont_col_desc[] = {LV_GRID_CONTENT, LV_GRID_FR(1), LV_GRID_CONTENT, LV_GRID_TEMPLATE_LAST};
     static int32_t outer_cont_row_desc[] = {LV_GRID_CONTENT, LV_GRID_FR(1), LV_GRID_TEMPLATE_LAST};
     lv_obj_set_grid_dsc_array(outer_cont, outer_cont_col_desc, outer_cont_row_desc);
@@ -40,7 +47,6 @@ void HomeUI::do_render(lv_obj_t* parent) {
     lv_obj_set_style_pad_all(search_button, search_button_pad, LV_PART_MAIN);
     lv_obj_set_grid_cell(search_button, LV_GRID_ALIGN_STRETCH, 2, 1, LV_GRID_ALIGN_STRETCH, 0, 1);
     auto search_button_label = lv_label_create(search_button);
-    lv_obj_center(search_button_label);
     lv_label_set_text(search_button_label, Messages::MAGNIFYING_GLASS);
 
     auto search = lv_textarea_create(outer_cont);
@@ -107,20 +113,29 @@ void HomeUI::do_render(lv_obj_t* parent) {
         lv_obj_on_clicked(obj, [this, card_id] { open_card(card_id); });
 
         auto card_cont = lv_obj_create(obj);
+        lv_obj_add_flag(card_cont, LV_OBJ_FLAG_EVENT_BUBBLE);
         lv_obj_remove_style_all(card_cont);
         lv_obj_set_size(card_cont, LV_PCT(100), LV_SIZE_CONTENT);
         lv_obj_set_flex_flow(card_cont, LV_FLEX_FLOW_COLUMN);
 
         auto label = lv_label_create(card_cont);
+        lv_obj_add_flag(label, LV_OBJ_FLAG_EVENT_BUBBLE);
         lv_obj_set_width(label, LV_PCT(100));
         lv_label_set_text(label, card.name().c_str());
         lv_label_set_long_mode(label, LV_LABEL_LONG_WRAP);
         lv_obj_set_style_text_align(label, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN);
 
-        auto image = lv_image_create(card_cont);
-        lv_obj_remove_style_all(image);
+        auto image_cont = lv_obj_create(card_cont);
+        lv_obj_remove_style_all(image_cont);
+        lv_obj_add_flag(image_cont, LV_OBJ_FLAG_EVENT_BUBBLE);
+        lv_obj_set_size(image_cont, LV_PCT(100), LV_SIZE_CONTENT);
+        lv_obj_set_style_margin_top(image_cont, ph(2), LV_PART_MAIN);
+        lv_obj_set_style_radius(image_cont, lv_dpx(8), LV_PART_MAIN);
+        lv_obj_set_style_clip_corner(image_cont, true, LV_PART_MAIN);
+
+        auto image = lv_image_create(image_cont);
         lv_obj_set_width(image, LV_PCT(100));
-        lv_obj_set_style_margin_top(image, ph(2), LV_PART_MAIN);
+        lv_obj_add_flag(image, LV_OBJ_FLAG_EVENT_BUBBLE);
         _card_attachment_cover_images[card.id()] = image;
 
         auto attachment = _card_attachment_cover_files.find(card.id());
@@ -152,8 +167,14 @@ void HomeUI::cards_loaded(const result<vector<TrelloCard>, TrelloError>& cards) 
 }
 
 void HomeUI::load_attachment_covers(vector<TrelloCard> cards) {
-    _tasks->run([this, cards] {
+    auto cookie = get_cookie();
+
+    _tasks->run([this, cards, cookie] {
         for (auto card : cards) {
+            if (!cookie.is_valid()) {
+                return;
+            }
+
             if (card.id_attachment_cover().has_value()) {
                 auto attachment = _api->get_card_attachment(card.id(), card.id_attachment_cover().value());
 
@@ -162,7 +183,11 @@ void HomeUI::load_attachment_covers(vector<TrelloCard> cards) {
                     if (file.is_ok()) {
                         auto card_id = card.id();
 
-                        _queue->enqueue([this, card_id, file] {
+                        _queue->enqueue([this, cookie, card_id, file] {
+                            if (!cookie.is_valid()) {
+                                return;
+                            }
+
                             _card_attachment_cover_files[card_id] = file.value();
 
                             auto image = _card_attachment_cover_images.find(card_id);

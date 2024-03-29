@@ -14,7 +14,7 @@
 #ifdef LV_SIMULATOR
 
 // Redirect to the simulator version of the CONF file.
-#include "lvgl_windows_simulator/LvglWindowsSimulator/lv_conf.h"
+#include "../tools/windows_simulator/LvglWindowsSimulator/lv_conf.h"
 
 #else
 

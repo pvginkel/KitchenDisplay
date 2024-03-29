@@ -1,5 +1,7 @@
 #pragma once
 
+#ifndef LV_SIMULATOR
+
 class Device {
 public:
     void begin();
@@ -7,3 +9,5 @@ public:
 private:
     void set_fbcon_cursor(bool blank);
 };
+
+#endif

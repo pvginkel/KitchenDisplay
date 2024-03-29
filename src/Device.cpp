@@ -1,5 +1,7 @@
 #include "includes.h"
 
+#ifndef LV_SIMULATOR
+
 #include "Device.h"
 
 static const char* TAG = "Device";
@@ -51,3 +53,5 @@ void Device::set_fbcon_cursor(bool blank) {
     }
     close(fd);
 }
+
+#endif

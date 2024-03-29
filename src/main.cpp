@@ -1,5 +1,7 @@
 #include "includes.h"
 
+#ifndef LV_SIMULATOR
+
 #include "Application.h"
 #include "Device.h"
 #include "Queue.h"
@@ -31,3 +33,5 @@ int main() {
 
     return 0;
 }
+
+#endif

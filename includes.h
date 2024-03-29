@@ -40,8 +40,8 @@
 #include <thread>
 #include <vector>
 
-#include "lib/cJSON/cJSON.h"
-#include "lvgl/lvgl.h"
+#include "cJSON.h"
+#include "lvgl.h"
 
 using namespace std;
 

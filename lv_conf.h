@@ -893,7 +893,7 @@
 #define LV_USE_TFT_ESPI         0
 
 /*Driver for evdev input devices*/
-#define LV_USE_EVDEV    0
+#define LV_USE_EVDEV    1
 
 /*Drivers for LCD devices connected via SPI/parallel port*/
 #define LV_USE_ST7735       0
@@ -941,7 +941,7 @@
     #define LV_DEMO_MUSIC_SQUARE    0
     #define LV_DEMO_MUSIC_LANDSCAPE 0
     #define LV_DEMO_MUSIC_ROUND     0
-    #define LV_DEMO_MUSIC_LARGE     0
+    #define LV_DEMO_MUSIC_LARGE     1
     #define LV_DEMO_MUSIC_AUTO_PLAY 0
 #endif
 

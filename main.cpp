@@ -3,7 +3,6 @@
 #include "Application.h"
 #include "Device.h"
 #include "Queue.h"
-#include "lvgl/demos/lv_demos.h"
 
 int main() {
     Device device;

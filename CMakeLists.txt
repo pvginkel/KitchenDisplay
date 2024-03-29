@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(lvgl)
+project(KitchenDisplay)
 
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_CXX_STANDARD 17)
@@ -10,12 +10,11 @@ set(LV_CONF_BUILD_DISABLE_DEMOS ON)
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 
-add_subdirectory(lvgl)
-target_include_directories(lvgl PUBLIC ${PROJECT_SOURCE_DIR} lib/cmark/src build/lib/cmark/src)
-
+add_subdirectory(lib/lvgl)
 add_subdirectory(lib/cJSON)
-
 add_subdirectory(lib/cmark)
+
+target_include_directories(lvgl PUBLIC ${PROJECT_SOURCE_DIR})
 
 FILE(GLOB lv_font_files lv_font_*.c)
 
@@ -25,4 +24,5 @@ add_executable(
     ${lv_font_files})
 
 target_link_libraries(main lvgl m pthread cmark cjson curl crypto icuuc icui18n)
-add_custom_target(run COMMAND ${EXECUTABLE_OUTPUT_PATH}/main DEPENDS main)
+
+target_include_directories(main PUBLIC ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/lib/lvgl ${PROJECT_SOURCE_DIR}/lib/cJSON ${PROJECT_SOURCE_DIR}/lib/cmark/src ${PROJECT_SOURCE_DIR}/build/lib/cmark/src)

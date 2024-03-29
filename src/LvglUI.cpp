@@ -2,6 +2,8 @@
 
 #include "LvglUI.h"
 
+LOG_TAG(LvglUI);
+
 constexpr auto CIRCLES = 11;
 constexpr auto CIRCLES_RADIUS = 10;
 constexpr auto CIRCLE_RADIUS = 4;
@@ -35,6 +37,8 @@ LvglUI::~LvglUI() { remove_loading_ui(); }
 void LvglUI::begin() { do_begin(); }
 
 void LvglUI::render() {
+    LOGI(TAG, "DPI %d dpx %d", LV_DPI_DEF, lv_dpx(100));
+
     current_cookie++;
 
     auto parent = lv_screen_active();

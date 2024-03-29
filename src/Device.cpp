@@ -43,6 +43,8 @@ void Device::begin() {
         lv_indev_set_cursor(mouse_indev, cursor_obj);
 #endif
     }
+
+    lv_display_set_dpi(lv_display_get_default(), LV_DPI_DEF);
 }
 
 void Device::set_fbcon_cursor(bool blank) {

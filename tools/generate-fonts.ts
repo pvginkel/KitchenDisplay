@@ -5,7 +5,7 @@ import { exit } from 'process';
 
 for (const fileName of fs.readdirSync("..")) {
   if (/^lv_font_.*\.c$/.test(fileName)) {
-    fs.rmSync(`../${fileName}`);
+    fs.rmSync(`../src/${fileName}`);
   }
 }
 
@@ -26,7 +26,7 @@ for (const font of fonts) {
     console.log(`Generating ${name}`);
     console.log();
 
-    let args = `--no-compress --no-prefilter --bpp 4 --size ${size} --format lvgl -o "../${name}.c" --force-fast-kern-format --lv-include lvgl.h `;
+    let args = `--no-compress --no-prefilter --bpp 4 --size ${size} --format lvgl -o "../src/${name}.c" --force-fast-kern-format --lv-include lvgl.h `;
 
     for (const file of font.fonts) {
       args += `--font "fonts/${file.file}" --range "${file.range}" `;
@@ -54,4 +54,4 @@ header += '#ifdef __cplusplus\n';
 header += '}\n';
 header += '#endif\n';
 
-fs.writeFileSync('../fonts.h', header);
+fs.writeFileSync('../src/fonts.h', header);

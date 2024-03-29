@@ -170,24 +170,24 @@ void MarkdownRenderer::render_node(cmark_node *node, cmark_event_type ev_type, i
 
                 auto &state = top_state();
 
+                assert(state.type == StateType::List);
+
                 auto row = state.list_items++;
 
                 lv_obj_set_grid_cell(cont, LV_GRID_ALIGN_STRETCH, 1, 1, LV_GRID_ALIGN_START, row, 1);
 
                 auto list_indicator = lv_label_create(get_cont());
-                lv_obj_set_grid_cell(list_indicator, LV_GRID_ALIGN_STRETCH, 0, 1, LV_GRID_ALIGN_START, row, 1);
-                lv_obj_set_size(list_indicator, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
-                lv_obj_set_style_margin_top(list_indicator, lv_obj_get_style_margin_top(cont, LV_PART_MAIN),
-                                            LV_PART_MAIN);
-
-                assert(state.type == StateType::List);
 
                 if (state.list_type == CMARK_BULLET_LIST) {
-                    lv_label_set_text(list_indicator, "\xe2\x80\xa2");
+                    lv_label_set_text(list_indicator, Messages::BULLET);
                 } else {
                     auto text = strformat("%d.", state.list_start++);
                     lv_label_set_text(list_indicator, text.c_str());
                 }
+                lv_obj_set_grid_cell(list_indicator, LV_GRID_ALIGN_STRETCH, 0, 1, LV_GRID_ALIGN_START, row, 1);
+                lv_obj_set_size(list_indicator, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+                lv_obj_set_style_margin_top(list_indicator, lv_obj_get_style_margin_top(cont, LV_PART_MAIN),
+                                            LV_PART_MAIN);
             }
             break;
 

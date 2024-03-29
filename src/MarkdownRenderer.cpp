@@ -4,7 +4,7 @@
 
 #include <cmark.h>
 
-static const char *TAG = "MarkdownRenderer";
+LOG_TAG(MarkdownRenderer);
 
 constexpr auto STYLE_STRONG = 1;
 constexpr auto STYLE_EMPH = 2;

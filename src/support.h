@@ -22,6 +22,7 @@ static void with_mutex(mutex& mutex, function<void()> func) {
     func();
 }
 
+#define LOG_TAG(name) static const char* TAG = #name
 #define LOGE(tag, format, ...) printf("\033[31mERROR [%s] " format "\033[0m\n", tag, ##__VA_ARGS__)
 #define LOGW(tag, format, ...) printf("\033[33mWARN [%s] " format "\033[0m\n", tag, ##__VA_ARGS__)
 #define LOGI(tag, format, ...) printf("\033[97mINFO [%s] " format "\033[0m\n", tag, ##__VA_ARGS__)

@@ -2,7 +2,7 @@
 
 #include "TrelloApi.h"
 
-static const char *TAG = "TrelloApi";
+LOG_TAG(TrelloApi);
 
 typedef size_t curl_write_cb_t(void *contents, size_t size, size_t nmemb, void *userp);
 
@@ -182,7 +182,9 @@ TrelloResult<string> TrelloApi::get_file(const string &url, const string &extens
     auto headers = curl_slist_append(nullptr, authorization_header.c_str());
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 
-    ofstream file(file_name, ios::binary);
+    auto tmp_file_name = file_name + ".tmp";
+
+    ofstream file(tmp_file_name, ios::binary);
 
     auto full_url = url;
     if (full_url.find("://") == string::npos) {
@@ -214,12 +216,15 @@ TrelloResult<string> TrelloApi::get_file(const string &url, const string &extens
     }
 
     if (status_code < 200 || status_code >= 300) {
-        filesystem::remove(file_name);
+        filesystem::remove(tmp_file_name);
 
         LOGE(TAG, "Request failed %d status code %d", (int)res, (int)status_code);
 
         return TrelloError::RequestFailed;
     }
+
+    filesystem::remove(file_name);
+    filesystem::rename(tmp_file_name, file_name);
 
     return file_name;
 }

@@ -4,7 +4,7 @@
 
 #include "MarkdownTestUI.h"
 
-static const char* TAG = "Application";
+LOG_TAG(Application);
 
 void Application::begin() {
     auto api_key = getenv("TRELLO_API_KEY");

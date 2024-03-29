@@ -4,7 +4,7 @@
 
 #include "Device.h"
 
-static const char* TAG = "Device";
+LOG_TAG(Device);
 
 void Device::begin() {
     auto fb_dev = (const char*)getenv("FB_DEV");

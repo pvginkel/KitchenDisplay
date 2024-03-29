@@ -18,7 +18,7 @@ public:
 
 class LvglUI {
     vector<lv_obj_t*> _loading_circles;
-    static uint32_t current_cookie;
+    static atomic<uint32_t> current_cookie;
 
     friend LvglUICookie;
 

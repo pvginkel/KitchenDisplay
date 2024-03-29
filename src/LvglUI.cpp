@@ -8,7 +8,7 @@ constexpr auto CIRCLES = 11;
 constexpr auto CIRCLES_RADIUS = 10;
 constexpr auto CIRCLE_RADIUS = 4;
 
-uint32_t LvglUI::current_cookie = 0;
+atomic<uint32_t> LvglUI::current_cookie(0);
 
 void lv_obj_set_bounds(lv_obj_t* obj, int x, int y, int width, int height, lv_text_align_t align) {
     lv_obj_set_size(obj, width, height);
@@ -30,15 +30,13 @@ void lv_obj_set_bounds(lv_obj_t* obj, int x, int y, int width, int height, lv_te
     lv_obj_set_y(obj, y - height / 2);
 }
 
-bool LvglUICookie::is_valid() const { return LvglUI::current_cookie == _cookie; }
+bool LvglUICookie::is_valid() const { return LvglUI::current_cookie.load() == _cookie; }
 
 LvglUI::~LvglUI() { remove_loading_ui(); }
 
 void LvglUI::begin() { do_begin(); }
 
 void LvglUI::render() {
-    LOGI(TAG, "DPI %d dpx %d", LV_DPI_DEF, lv_dpx(100));
-
     current_cookie++;
 
     auto parent = lv_screen_active();

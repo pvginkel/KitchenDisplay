@@ -2,6 +2,6 @@
 
 set -e
 
-cd bin
+cd "$(dirname "$0")/../bin"
 
 sudo --preserve-env ./main

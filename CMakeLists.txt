@@ -14,15 +14,10 @@ add_subdirectory(lib/lvgl)
 add_subdirectory(lib/cJSON)
 add_subdirectory(lib/cmark)
 
-target_include_directories(lvgl PUBLIC ${PROJECT_SOURCE_DIR})
+target_include_directories(lvgl PUBLIC ${PROJECT_SOURCE_DIR}/src)
 
-FILE(GLOB lv_font_files lv_font_*.c)
+FILE(GLOB SOURCES ${PROJECT_SOURCE_DIR}/src/*.c ${PROJECT_SOURCE_DIR}/src/*.cpp)
 
-add_executable(
-    main main.cpp mouse_cursor_icon.c Application.cpp Device.cpp lvgl_events.cpp MarkdownTestUI.cpp
-    support.cpp TrelloApi.cpp CardUI.cpp HomeUI.cpp LvglUI.cpp MarkdownRenderer.cpp Queue.cpp Tasks.cpp
-    ${lv_font_files})
-
+add_executable(main ${SOURCES})
 target_link_libraries(main lvgl m pthread cmark cjson curl crypto icuuc icui18n)
-
 target_include_directories(main PUBLIC ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/lib/lvgl ${PROJECT_SOURCE_DIR}/lib/cJSON ${PROJECT_SOURCE_DIR}/lib/cmark/src ${PROJECT_SOURCE_DIR}/build/lib/cmark/src)

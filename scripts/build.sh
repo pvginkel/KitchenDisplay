@@ -1,5 +1,7 @@
 #!/bin/sh
 
+cd "$(dirname "$0")/.."
+
 set -e
 
 if [ ! -d build ]; then mkdir build; fi

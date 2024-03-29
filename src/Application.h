@@ -1,7 +1,7 @@
 #pragma once
 
-#include "HomeUI.h"
 #include "CardUI.h"
+#include "HomeUI.h"
 #include "Queue.h"
 
 class Application {
@@ -9,7 +9,7 @@ class Application {
     Tasks _tasks;
     HomeUI* _home;
     CardUI* _card;
-    TrelloApi *_api;
+    TrelloApi* _api;
 
 public:
     Application() : _home(nullptr), _card(nullptr), _api(nullptr) {}

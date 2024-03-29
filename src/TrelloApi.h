@@ -63,7 +63,8 @@ public:
     TrelloResult<vector<TrelloCard>> get_board_cards(const string& board_id);
     TrelloResult<TrelloCardAttachment> get_card_attachment(const string& card_id, const string& attachment_id);
     TrelloResult<string> get_file(const string& url, bool force = false);
-    TrelloResult<string> get_image_file(const string& url, optional<int> width, optional<int> height, bool force = false);
+    TrelloResult<string> get_image_file(const string& url, optional<int> width, optional<int> height,
+                                        bool force = false);
 
 private:
     TrelloResult<string> get_file(const string& url, const string& extension, bool force = false);

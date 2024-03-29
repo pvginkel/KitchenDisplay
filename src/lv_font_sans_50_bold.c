@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Size: 50 px
  * Bpp: 4
- * Opts: --no-compress --no-prefilter --bpp 4 --size 50 --format lvgl -o ../src/lv_font_sans_50_bold.c --force-fast-kern-format --lv-include lvgl.h --font fonts/Roboto-Bold.ttf --range 0x20-0xFF,0x2022,0x2018,0x2019,0x2022
+ * Opts: --no-compress --no-prefilter --bpp 4 --size 50 --format lvgl -o ../src/lv_font_sans_50_bold.c --force-fast-kern-format --lv-include lvgl.h --font fonts/Roboto-Bold.ttf --range 0x20-0xFF,0x2018,0x2019,0x2022
  ******************************************************************************/
 
 #ifdef LV_LVGL_H_INCLUDE_SIMPLE

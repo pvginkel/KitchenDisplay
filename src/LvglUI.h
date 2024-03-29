@@ -17,8 +17,9 @@ public:
 };
 
 class LvglUI {
+    static atomic<uint32_t> _current_cookie;
+
     vector<lv_obj_t*> _loading_circles;
-    static atomic<uint32_t> current_cookie;
 
     friend LvglUICookie;
 
@@ -43,5 +44,6 @@ protected:
     static void loading_animation_callback(void* var, int32_t v);
     void remove_loading_ui();
     void reset_outer_container_styles(lv_obj_t* cont);
-    LvglUICookie get_cookie() const { return {current_cookie}; }
+    LvglUICookie get_cookie() const { return {_current_cookie}; }
+    void style_icon_button(lv_obj_t* button);
 };

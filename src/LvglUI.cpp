@@ -8,7 +8,7 @@ constexpr auto CIRCLES = 11;
 constexpr auto CIRCLES_RADIUS = 10;
 constexpr auto CIRCLE_RADIUS = 4;
 
-atomic<uint32_t> LvglUI::current_cookie(0);
+atomic<uint32_t> LvglUI::_current_cookie(0);
 
 void lv_obj_set_bounds(lv_obj_t* obj, int x, int y, int width, int height, lv_text_align_t align) {
     lv_obj_set_size(obj, width, height);
@@ -30,14 +30,14 @@ void lv_obj_set_bounds(lv_obj_t* obj, int x, int y, int width, int height, lv_te
     lv_obj_set_y(obj, y - height / 2);
 }
 
-bool LvglUICookie::is_valid() const { return LvglUI::current_cookie.load() == _cookie; }
+bool LvglUICookie::is_valid() const { return LvglUI::_current_cookie.load() == _cookie; }
 
 LvglUI::~LvglUI() { remove_loading_ui(); }
 
 void LvglUI::begin() { do_begin(); }
 
 void LvglUI::render() {
-    current_cookie++;
+    _current_cookie++;
 
     auto parent = lv_screen_active();
 
@@ -112,4 +112,11 @@ void LvglUI::reset_outer_container_styles(lv_obj_t* cont) {
     lv_obj_set_style_pad_row(cont, lv_dpx(PADDING), LV_PART_MAIN);
     lv_obj_set_style_pad_column(cont, lv_dpx(PADDING), LV_PART_MAIN);
     lv_obj_set_style_pad_all(cont, lv_dpx(PADDING), LV_PART_MAIN);
+}
+
+void LvglUI::style_icon_button(lv_obj_t* button) {
+    lv_obj_set_style_text_font(button, &lv_font_symbols, LV_PART_MAIN);
+    auto pad = lv_obj_get_style_pad_top(button, LV_PART_MAIN);
+    lv_obj_set_style_pad_hor(button, pad * 1.3, LV_PART_MAIN);
+    lv_obj_set_style_pad_ver(button, pad * 1.2, LV_PART_MAIN);
 }

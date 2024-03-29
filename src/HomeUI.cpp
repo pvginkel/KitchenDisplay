@@ -43,9 +43,8 @@ void HomeUI::do_render(lv_obj_t* parent) {
     // Button is added before the search box to have it get focus.
 
     auto search_button = lv_button_create(outer_cont);
-    auto search_button_pad = lv_obj_get_style_pad_top(search_button, LV_PART_MAIN);
-    lv_obj_set_style_pad_all(search_button, search_button_pad, LV_PART_MAIN);
-    lv_obj_set_grid_cell(search_button, LV_GRID_ALIGN_STRETCH, 2, 1, LV_GRID_ALIGN_STRETCH, 0, 1);
+    style_icon_button(search_button);
+    lv_obj_set_grid_cell(search_button, LV_GRID_ALIGN_STRETCH, 2, 1, LV_GRID_ALIGN_CENTER, 0, 1);
     auto search_button_label = lv_label_create(search_button);
     lv_label_set_text(search_button_label, Messages::MAGNIFYING_GLASS);
 

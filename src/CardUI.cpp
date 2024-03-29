@@ -57,10 +57,9 @@ void CardUI::do_render(lv_obj_t* parent) {
     }
 
     auto back_button = lv_button_create(outer_cont);
+    style_icon_button(back_button);
     lv_obj_set_grid_cell(back_button, LV_GRID_ALIGN_STRETCH, 2, 1, LV_GRID_ALIGN_START, 0, 1);
 
-    auto back_button_pad = lv_obj_get_style_pad_top(back_button, LV_PART_MAIN);
-    lv_obj_set_style_pad_all(back_button, back_button_pad, LV_PART_MAIN);
     auto back_button_label = lv_label_create(back_button);
     lv_label_set_text(back_button_label, Messages::ARROW_LEFT);
 

@@ -1,22 +1,13 @@
-[submodule "lv_examples"]
-	path = lv_examples
-	url = https://github.com/littlevgl/lv_examples.git
-[submodule "lv_drivers"]
-	path = lv_drivers
-	url = https://github.com/littlevgl/lv_drivers.git
-[submodule "lvgl"]
-	path = lvgl
-	url = https://github.com/pvginkel/lvgl.git
-[submodule "lv_demos"]
-	path = lv_demos
-	url = https://github.com/lvgl/lv_demos
 [submodule "lib/cJSON"]
 	path = lib/cJSON
 	url = https://github.com/DaveGamble/cJSON.git
 	branch = master
-[submodule "lvgl_windows_simulator"]
-	path = lvgl_windows_simulator
-	url = https://github.com/pvginkel/lv_port_pc_visual_studio.git
 [submodule "lib/cmark"]
 	path = lib/cmark
 	url = https://github.com/commonmark/cmark.git
+[submodule "lib/lvgl"]
+	path = lib/lvgl
+	url = https://github.com/pvginkel/lvgl.git
+[submodule "tools/windows_simulator"]
+	path = tools/windows_simulator
+	url = https://github.com/pvginkel/lv_port_pc_visual_studio.git

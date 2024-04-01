@@ -42,22 +42,25 @@ void HomeUI::do_render(lv_obj_t* parent) {
 
     // Button is added before the search box to have it get focus.
 
-    auto search_button = lv_button_create(outer_cont);
-    style_icon_button(search_button);
-    lv_obj_set_grid_cell(search_button, LV_GRID_ALIGN_STRETCH, 2, 1, LV_GRID_ALIGN_CENTER, 0, 1);
-    auto search_button_label = lv_label_create(search_button);
-    lv_label_set_text(search_button_label, Messages::MAGNIFYING_GLASS);
+    auto quit_button = lv_button_create(outer_cont);
+    style_icon_button(quit_button);
+    lv_obj_set_grid_cell(quit_button, LV_GRID_ALIGN_STRETCH, 2, 1, LV_GRID_ALIGN_CENTER, 0, 1);
+    auto quit_button_label = lv_label_create(quit_button);
+    lv_label_set_text(quit_button_label, Messages::POWER_OFF_ICON);
 
     auto search = lv_textarea_create(outer_cont);
     lv_obj_set_grid_cell(search, LV_GRID_ALIGN_STRETCH, 1, 1, LV_GRID_ALIGN_STRETCH, 0, 1);
     lv_textarea_set_one_line(search, true);
     lv_textarea_set_text(search, _search.c_str());
 
-    lv_obj_on_focused(search, [this, parent, search, search_button] {
+    lv_obj_on_focused(search, [this, parent, search, quit_button] {
         if (!_keyboard) {
             _keyboard = lv_keyboard_create(parent);
-            lv_obj_on_ready(_keyboard,
-                            [search_button] { lv_obj_send_event(search_button, LV_EVENT_CLICKED, nullptr); });
+            lv_obj_on_ready(_keyboard, [this, search] {
+                _search = icu_lower(lv_textarea_get_text(search));
+
+                _queue->enqueue([this] { render(); });
+            });
         }
 
         lv_keyboard_set_textarea(_keyboard, search);
@@ -65,11 +68,7 @@ void HomeUI::do_render(lv_obj_t* parent) {
 
     lv_obj_on_defocused(search, [this] { delete_keyboard(); });
 
-    lv_obj_on_clicked(search_button, [this, search_button, search] {
-        _search = icu_lower(lv_textarea_get_text(search));
-
-        _queue->enqueue([this] { render(); });
-    });
+    lv_obj_on_clicked(quit_button, [this] { on_quit(); });
 
     // Three columns to show the results in.
 
@@ -227,3 +226,31 @@ void HomeUI::open_card(const string& card_id) {
         }
     }
 }
+
+void HomeUI::on_quit() {
+    auto message_box = lv_msgbox_create(nullptr);
+
+    auto title = lv_msgbox_add_title(message_box, Messages::QUIT_TITLE);
+
+    auto content = lv_msgbox_add_text(message_box, Messages::QUIT_MESSAGE);
+
+    lv_msgbox_add_close_button(message_box);
+
+    auto yes_button = lv_msgbox_add_footer_button(message_box, Messages::YES);
+    lv_obj_on_clicked(yes_button, [this] { quit(); });
+    auto no_button = lv_msgbox_add_footer_button(message_box, Messages::NO);
+    lv_obj_on_clicked(no_button, [message_box] { lv_msgbox_close(message_box); });
+
+    auto footer = lv_msgbox_get_footer(message_box);
+
+    lv_obj_set_width(message_box, pw(40));
+    lv_obj_set_style_text_font(message_box, &lv_font_sans_28, LV_PART_MAIN);
+    lv_obj_set_style_pad_all(title, lv_dpx(8), LV_PART_MAIN);
+    lv_obj_set_style_pad_all(content, lv_dpx(8), LV_PART_MAIN);
+    lv_obj_set_style_text_font(yes_button, &lv_font_sans_28, LV_PART_MAIN);
+    lv_obj_set_style_text_font(no_button, &lv_font_sans_28, LV_PART_MAIN);
+    lv_obj_set_style_pad_bottom(footer, lv_dpx(20), LV_PART_MAIN);
+    lv_obj_set_height(footer, lv_dpx(70));
+}
+
+void HomeUI::quit() { system("shutdown -h now"); }

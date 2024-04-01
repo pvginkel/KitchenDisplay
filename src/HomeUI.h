@@ -32,4 +32,6 @@ private:
     void load_attachment_covers(vector<TrelloCard> cards);
     void delete_keyboard();
     void open_card(const string& string);
+    void on_quit();
+    void quit();
 };

@@ -17,7 +17,7 @@
   size: 32
   fonts:
     - file: fa-solid-900.ttf
-      range: 0xf002,0xf060
+      range: 0xf002,0xf060,0xf011
 - name: 'lv_font_sans_{size}_bold'
   size:
     - 28

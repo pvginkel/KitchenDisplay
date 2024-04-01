@@ -179,7 +179,7 @@ void MarkdownRenderer::render_node(cmark_node *node, cmark_event_type ev_type, i
                 auto list_indicator = lv_label_create(get_cont());
 
                 if (state.list_type == CMARK_BULLET_LIST) {
-                    lv_label_set_text(list_indicator, Messages::BULLET);
+                    lv_label_set_text(list_indicator, Messages::BULLET_ICON);
                 } else {
                     auto text = strformat("%d.", state.list_start++);
                     lv_label_set_text(list_indicator, text.c_str());

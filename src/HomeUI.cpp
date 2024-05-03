@@ -3,11 +3,17 @@
 
 #include "HomeUI.h"
 
+LOG_TAG(HomeUI);
+
 void HomeUI::do_render(lv_obj_t* parent) {
     if (_cards.is_error(TrelloError::None)) {
         refresh_cards();
         render_loading_ui(parent);
         return;
+    }
+
+    if (!_cards.is_ok()) {
+        LOGI(TAG, "Failed to load cards: %d", (int)_cards.error());
     }
 
     if (false) {

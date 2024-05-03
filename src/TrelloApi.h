@@ -60,7 +60,7 @@ class TrelloApi {
 public:
     TrelloApi(string api_key, string user_token);
 
-    TrelloResult<vector<TrelloCard>> get_board_cards(const string& board_id);
+    TrelloResult<vector<TrelloCard>> get_board_cards(const string& board_id, bool force = false);
     TrelloResult<TrelloCardAttachment> get_card_attachment(const string& card_id, const string& attachment_id);
     TrelloResult<string> get_file(const string& url, bool force = false);
     TrelloResult<string> get_image_file(const string& url, optional<int> width, optional<int> height,
@@ -68,6 +68,6 @@ public:
 
 private:
     TrelloResult<string> get_file(const string& url, const string& extension, bool force = false);
-    TrelloResult<string> get_cached(const string& url);
+    TrelloResult<string> get_cached(const string& url, bool force = false);
     string get_cache_key(const string& url);
 };

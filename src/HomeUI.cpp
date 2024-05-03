@@ -1,4 +1,5 @@
 #include "includes.h"
+#include "Application.h"
 
 #include "HomeUI.h"
 
@@ -155,7 +156,8 @@ void HomeUI::do_render(lv_obj_t* parent) {
 
 void HomeUI::refresh_cards() {
     _tasks->run([this] {
-        auto cards = _api->get_board_cards(BOARD_ID);
+        auto force = Application::PRODUCTION;
+        auto cards = _api->get_board_cards(BOARD_ID, force);
 
         _queue->enqueue([this, cards] { cards_loaded(cards); });
     });

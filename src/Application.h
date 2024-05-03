@@ -5,6 +5,13 @@
 #include "Queue.h"
 
 class Application {
+public:
+#if NDEBUG
+    static constexpr auto PRODUCTION = true;
+#else
+    static constexpr auto PRODUCTION = false;
+#endif
+
     Queue _queue;
     Tasks _tasks;
     HomeUI* _home;

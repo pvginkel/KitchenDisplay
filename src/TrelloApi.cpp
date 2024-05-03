@@ -50,9 +50,9 @@ TrelloApi::TrelloApi(string api_key, string user_token)
     filesystem::create_directory(_cache_path);
 }
 
-TrelloResult<vector<TrelloCard>> TrelloApi::get_board_cards(const string &id) {
+TrelloResult<vector<TrelloCard>> TrelloApi::get_board_cards(const string &id, bool force) {
     string data;
-    attempt_res(data, get_cached(strformat("1/boards/%s/cards", id.c_str())));
+    attempt_res(data, get_cached(strformat("1/boards/%s/cards", id.c_str()), force));
 
     cJSON_Data json(cJSON_Parse(data.c_str()));
     if (!*json) {
@@ -143,9 +143,9 @@ TrelloResult<TrelloCardAttachment> TrelloApi::get_card_attachment(const string &
     return TrelloCardAttachment(cJSON_GetStringValue(id), cJSON_GetStringValue(name), cJSON_GetStringValue(url));
 }
 
-TrelloResult<string> TrelloApi::get_cached(const string &url) {
+TrelloResult<string> TrelloApi::get_cached(const string &url, bool force) {
     string file_name;
-    attempt_res(file_name, get_file(url));
+    attempt_res(file_name, get_file(url, force));
 
     ifstream file(file_name);
 

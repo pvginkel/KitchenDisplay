@@ -7,6 +7,8 @@
 LOG_TAG(Application);
 
 void Application::begin() {
+    LOGI(TAG, "Starting...");
+
     auto api_key = getenv("TRELLO_API_KEY");
     auto user_token = getenv("TRELLO_USER_TOKEN");
 

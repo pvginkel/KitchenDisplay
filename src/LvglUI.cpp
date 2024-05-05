@@ -94,7 +94,7 @@ void LvglUI::loading_animation_callback(void* var, int32_t v) {
 
     for (const auto obj : self->_loading_circles) {
         lv_obj_set_style_bg_opa(obj, (v / double(CIRCLES)) * 255, 0);
-        v = (v - 1) % CIRCLES;
+        v = (v + CIRCLES - 1) % CIRCLES;
     }
 }
 

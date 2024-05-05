@@ -45,7 +45,7 @@ static int simple_callback(void *data, uintptr_t pc) {
 
 static inline void bt(struct backtrace_state *state) {
     struct bt_ctx ctx = {state, 0};
-    backtrace_print(state, 0, stdout);
+    // backtrace_print(state, 0, stdout);
     backtrace_simple(state, 0, simple_callback, error_callback, &ctx);
 }
 

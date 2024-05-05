@@ -203,7 +203,19 @@ TrelloResult<string> TrelloApi::get_file(const string &url, const string &extens
 
     LOGI(TAG, "Requesting %s", full_url.c_str());
 
-    auto res = curl_easy_perform(curl);
+    CURLcode res;
+
+    for (auto i = 0; i < 10; i++) {
+        res = curl_easy_perform(curl);
+
+        if (res == CURLE_COULDNT_RESOLVE_HOST) {
+            sleep(5);
+
+            LOGW(TAG, "Retrying...");
+        } else {
+            break;
+        }
+    }
 
     file.close();
 

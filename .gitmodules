@@ -13,4 +13,4 @@
 	url = https://github.com/pvginkel/lv_port_pc_visual_studio.git
 [submodule "lib/libbacktrace"]
 	path = lib/libbacktrace
-	url = https://github.com/ianlancetaylor/libbacktrace
+	url = https://github.com/ErwanLegrand/libbacktrace.git

@@ -12,14 +12,10 @@ set(CMAKE_BUILD_TYPE RelWithDebInfo)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set(ENABLE_CJSON_TEST OFF)
 set(BUILD_TESTING OFF)
-set(BUILD_CURL_EXE OFF CACHE BOOL "Do not build curl executable")
 
 add_subdirectory(lib/lvgl)
 add_subdirectory(lib/cJSON)
 add_subdirectory(lib/cmark)
-add_subdirectory(lib/curl)
-
-# set_target_properties(curl PROPERTIES ENABLE_EXPORTS TRUE)
 
 target_include_directories(lvgl PUBLIC ${PROJECT_SOURCE_DIR}/src)
 
@@ -31,8 +27,9 @@ find_library(BACKTRACE_LIB backtrace HINTS ${PROJECT_SOURCE_DIR}/build/lib/libba
 find_library(ICUUC_LIB icuuc HINTS ${PROJECT_SOURCE_DIR}/build/lib/icu/lib)
 find_library(ICUI18N_LIB icui18n HINTS ${PROJECT_SOURCE_DIR}/build/lib/icu/lib)
 find_library(ICUDATA_LIB icudata HINTS ${PROJECT_SOURCE_DIR}/build/lib/icu/lib)
+find_library(CURL_LIB curl HINTS ${PROJECT_SOURCE_DIR}/build/lib/curl/lib)
 
-target_link_libraries(main lvgl m pthread cmark cjson libcurl crypto ${ICUUC_LIB} ${ICUI18N_LIB} ${ICUDATA_LIB} ${BACKTRACE_LIB})
+target_link_libraries(main lvgl m pthread cmark cjson ssl z ${CURL_LIB} crypto ${ICUUC_LIB} ${ICUI18N_LIB} ${ICUDATA_LIB} ${BACKTRACE_LIB})
 
 target_include_directories(
     main PUBLIC

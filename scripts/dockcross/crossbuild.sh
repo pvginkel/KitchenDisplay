@@ -7,6 +7,10 @@ cd "$(dirname "$0")/../.."
 ROOT="$(pwd)"
 
 build_libbacktrace() {
+    if [ -d $ROOT/build/lib/libbacktrace ]; then
+        return
+    fi
+
     echo "Building libbacktrace..."
 
     cd $ROOT/lib/libbacktrace
@@ -46,6 +50,22 @@ build_icu() {
     make -j$(nproc) install
 }
 
+build_curl() {
+    if [ -d $ROOT/build/lib/curl ]; then
+        return
+    fi
+
+    echo "Building cURL"
+
+    cd $ROOT/lib/curl
+    mkdir -p $ROOT/build/lib/curl
+    
+    mkdir -p build
+    cd build
+    cmake -DBUILD_STATIC_LIBS=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_CURL_EXE=OFF -DCMAKE_INSTALL_PREFIX:PATH=$ROOT/build/lib/curl ..
+    make -j$(nproc) install
+}
+
 build_app() {
     echo "Building app..."
 
@@ -61,6 +81,7 @@ main() {
         build_icu_host
     else
         build_libbacktrace
+        build_curl
         build_icu
         build_app
     fi

@@ -1,4 +1,4 @@
 file ./main
 run
-bt
+thread apply all bt
 quit

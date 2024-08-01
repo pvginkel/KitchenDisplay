@@ -4,16 +4,14 @@ cd "$(dirname "$0")/.."
 
 set -e
 
-if [ ! -d build ]; then mkdir build; fi
+mkdir -p build
 
 cd build
 
-if [ -f CMakeCache.txt ]; then rm CMakeCache.txt; fi
-
-if grep -q 'Raspbian' /etc/os-release; then
-  cmake ..
-  make
-else
+if [ "$1" = "debug" ]; then
   cmake -DCMAKE_BUILD_TYPE=Debug ..
   make -j
+else
+  cmake ..
+  make
 fi

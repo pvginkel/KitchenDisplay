@@ -18,6 +18,10 @@ build_libbacktrace() {
 }
 
 build_icu_host() {
+    if [ -d $ROOT/build/lib/icu ]; then
+        return
+    fi
+
     echo "Building icu..."
 
     mkdir -p $ROOT/build/lib/icu-host
@@ -28,6 +32,10 @@ build_icu_host() {
 }
 
 build_icu() {
+    if [ -d $ROOT/build/lib/icu ]; then
+        return
+    fi
+
     echo "Building icu..."
 
     mkdir -p $ROOT/build/lib/icu-cross $ROOT/build/lib/icu

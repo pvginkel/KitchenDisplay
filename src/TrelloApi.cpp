@@ -253,7 +253,7 @@ TrelloResult<string> TrelloApi::get_image_file(const string &url, optional<int> 
         return TrelloError::Unknown;
     }
 
-    auto new_url = strformat("http://%s/lvgl/get_image.php?url=%s&headers=authorization", SRVMAIN, *url_encoded);
+    auto new_url = strformat("http://iotsupport.home/lvgl/get_image.php?url=%s&headers=authorization", *url_encoded);
 
     if (width.has_value()) {
         new_url += strformat("&width=%d", width.value());

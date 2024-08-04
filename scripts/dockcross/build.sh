@@ -22,4 +22,4 @@ do_crossbuild() {
 cd "$(dirname "$0")"
 
 do_crossbuild dockbuild/ubuntu2104 scripts/dockcross/crossbuild.sh prerequisites
-do_crossbuild dockcross/linux-arm64-full scripts/dockcross/crossbuild.sh
+do_crossbuild dockcross/linux-arm64 scripts/dockcross/crossbuild.sh

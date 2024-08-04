@@ -28,8 +28,11 @@ find_library(ICUUC_LIB icuuc HINTS ${PROJECT_SOURCE_DIR}/build/lib/icu/lib)
 find_library(ICUI18N_LIB icui18n HINTS ${PROJECT_SOURCE_DIR}/build/lib/icu/lib)
 find_library(ICUDATA_LIB icudata HINTS ${PROJECT_SOURCE_DIR}/build/lib/icu/lib)
 find_library(CURL_LIB curl HINTS ${PROJECT_SOURCE_DIR}/build/lib/curl/lib)
+find_library(OPENSSL_LIB ssl HINTS ${PROJECT_SOURCE_DIR}/build/lib/openssl/lib)
+find_library(CRYPTO_LIB crypto HINTS ${PROJECT_SOURCE_DIR}/build/lib/openssl/lib)
+find_library(ZLIB_LIB z HINTS ${PROJECT_SOURCE_DIR}/build/lib/zlib/lib)
 
-target_link_libraries(main lvgl m pthread cmark cjson ssl z ${CURL_LIB} crypto ${ICUUC_LIB} ${ICUI18N_LIB} ${ICUDATA_LIB} ${BACKTRACE_LIB})
+target_link_libraries(main lvgl m pthread cmark cjson ${OPENSSL_LIB} ${CRYPTO_LIB} ${ZLIB_LIB} ${CURL_LIB} ${ICUUC_LIB} ${ICUI18N_LIB} ${ICUDATA_LIB} ${BACKTRACE_LIB})
 
 target_include_directories(
     main PUBLIC
@@ -41,4 +44,24 @@ target_include_directories(
     ${PROJECT_SOURCE_DIR}/build/lib/cmark/src
     ${PROJECT_SOURCE_DIR}/build/lib/icu/include
     ${PROJECT_SOURCE_DIR}/build/lib/libbacktrace/include
+    ${PROJECT_SOURCE_DIR}/build/lib/openssl/include
 )
+
+add_custom_target(copy_dependencies ALL
+    COMMENT "Copying dependencies to ${PROJECT_SOURCE_DIR}/bin"
+)
+
+set(
+    DEPENDENCIES
+    ${ICUUC_LIB} ${ICUI18N_LIB} ${ICUDATA_LIB}
+    ${OPENSSL_LIB} ${CRYPTO_LIB}
+    ${ZLIB_LIB}
+)
+
+foreach(DEPENDENCY ${DEPENDENCIES})
+    add_custom_command(
+        TARGET copy_dependencies
+        COMMAND cp -a -u ${DEPENDENCY}* ${PROJECT_SOURCE_DIR}/bin
+        COMMENT "Copying ${DEPENDENCY}* to ${PROJECT_SOURCE_DIR}/bin"
+    )
+endforeach()

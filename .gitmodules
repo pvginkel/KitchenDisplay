@@ -20,3 +20,9 @@
 [submodule "lib/icu"]
 	path = lib/icu
 	url = https://github.com/unicode-org/icu.git
+[submodule "lib/openssl"]
+	path = lib/openssl
+	url = https://github.com/openssl/openssl.git
+[submodule "lib/zlib"]
+	path = lib/zlib
+	url = https://github.com/madler/zlib.git

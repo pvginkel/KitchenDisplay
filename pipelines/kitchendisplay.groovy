@@ -51,9 +51,9 @@ podTemplate(inheritFrom: 'jenkins-agent-large', containers: [
         
         stage('Deploy kitchendisplay') {
             dir('KitchenDisplay') {
-                helmCharts.ssh('pvginkel@192.168.178.10', 'sudo systemctl stop kitchendisplay')
-                helmCharts.scp('bin/.', 'pvginkel@192.168.178.10:/var/local/kitchendisplay/bin')
-                helmCharts.ssh('pvginkel@192.168.178.10', 'sudo systemctl start kitchendisplay')
+                helmCharts.ssh('pvginkel@iotkitchendisplay.home', 'sudo systemctl stop kitchendisplay')
+                helmCharts.scp('bin/.', 'pvginkel@iotkitchendisplay.home:/var/local/kitchendisplay/bin')
+                helmCharts.ssh('pvginkel@iotkitchendisplay.home', 'sudo systemctl start kitchendisplay')
             }
         }
     }

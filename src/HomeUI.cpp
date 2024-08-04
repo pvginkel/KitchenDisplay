@@ -1,7 +1,8 @@
 #include "includes.h"
-#include "Application.h"
 
 #include "HomeUI.h"
+
+#include "Application.h"
 
 LOG_TAG(HomeUI);
 

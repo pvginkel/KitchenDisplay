@@ -10,6 +10,8 @@ set(LV_CONF_BUILD_DISABLE_DEMOS ON)
 set(CMAKE_BUILD_TYPE RelWithDebInfo)
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin
+    CACHE PATH "Output directory for shared libraries.")
 set(ENABLE_CJSON_TEST OFF)
 set(BUILD_TESTING OFF)
 
@@ -39,7 +41,7 @@ target_include_directories(
     ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/lib/cJSON
     ${PROJECT_SOURCE_DIR}/lib/cmark/src
-    ${PROJECT_SOURCE_DIR}/lib/curl/include
+    ${PROJECT_SOURCE_DIR}/build/lib/curl/include
     ${PROJECT_SOURCE_DIR}/build/lib/cmark/src
     ${PROJECT_SOURCE_DIR}/build/lib/icu/include
     ${PROJECT_SOURCE_DIR}/build/lib/libbacktrace/include

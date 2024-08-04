@@ -6,12 +6,19 @@ cd "$(dirname "$0")/../.."
 
 ROOT="$(pwd)"
 
+init_submodule() {
+    cd $ROOT
+    git submodule update --init  --depth 1 "$@"
+}
+
 build_libbacktrace() {
     if [ -d $ROOT/build/lib/libbacktrace ]; then
         return
     fi
 
     echo "Building libbacktrace..."
+
+    init_submodule lib/libbacktrace
 
     cd $ROOT/lib/libbacktrace
     mkdir -p $ROOT/build/lib/libbacktrace
@@ -28,6 +35,8 @@ build_icu_host() {
 
     echo "Building icu..."
 
+    init_submodule lib/icu
+
     mkdir -p $ROOT/build/lib/icu-host
     cd $ROOT/build/lib/icu-host
 
@@ -41,6 +50,8 @@ build_icu() {
     fi
 
     echo "Building icu..."
+
+    init_submodule lib/icu
 
     mkdir -p $ROOT/build/lib/icu-cross
     cd $ROOT/build/lib/icu-cross
@@ -57,6 +68,8 @@ build_openssl() {
 
     echo "Building openssl..."
 
+    init_submodule lib/openssl
+
     mkdir -p $ROOT/lib/openssl/build
     cd $ROOT/lib/openssl/build
 
@@ -72,6 +85,8 @@ build_zlib() {
 
     echo "Building zlib"
 
+    init_submodule lib/zlib
+
     mkdir -p $ROOT/lib/zlib/build
     cd $ROOT/lib/zlib/build
 
@@ -85,6 +100,8 @@ build_curl() {
     fi
 
     echo "Building cURL"
+
+    init_submodule lib/curl
 
     mkdir -p $ROOT/lib/curl/build
     cd $ROOT/lib/curl/build
@@ -100,8 +117,29 @@ build_curl() {
     make -j$(nproc) install
 }
 
+build_lvgl() {
+    if [ -d $ROOT/build/lib/lvgl ]; then
+        return
+    fi
+
+    echo "Building LVGL"
+
+    init_submodule lib/lvgl
+
+    mkdir -p $ROOT/lib/lvgl/build
+    cd $ROOT/lib/lvgl/build
+
+    cmake \
+        -DCMAKE_INSTALL_PREFIX:PATH=$ROOT/build/lib/lvgl \
+        -DLV_CONF_PATH=$ROOT/src/lv_conf.h \
+        ..
+    make -j$(nproc) install
+}
+
 build_app() {
     echo "Building app..."
+
+    init_submodule lib/cJSON lib/cmark
 
     cd $ROOT/build
     cmake -DCMAKE_BUILD_TYPE=Debug ..
@@ -119,6 +157,7 @@ main() {
         build_zlib
         build_curl
         build_icu
+        build_lvgl
         build_app
     fi
 }

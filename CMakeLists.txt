@@ -13,11 +13,8 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set(ENABLE_CJSON_TEST OFF)
 set(BUILD_TESTING OFF)
 
-add_subdirectory(lib/lvgl)
 add_subdirectory(lib/cJSON)
 add_subdirectory(lib/cmark)
-
-target_include_directories(lvgl PUBLIC ${PROJECT_SOURCE_DIR}/src)
 
 FILE(GLOB SOURCES ${PROJECT_SOURCE_DIR}/src/*.c ${PROJECT_SOURCE_DIR}/src/*.cpp)
 
@@ -31,13 +28,15 @@ find_library(CURL_LIB curl HINTS ${PROJECT_SOURCE_DIR}/build/lib/curl/lib)
 find_library(OPENSSL_LIB ssl HINTS ${PROJECT_SOURCE_DIR}/build/lib/openssl/lib)
 find_library(CRYPTO_LIB crypto HINTS ${PROJECT_SOURCE_DIR}/build/lib/openssl/lib)
 find_library(ZLIB_LIB z HINTS ${PROJECT_SOURCE_DIR}/build/lib/zlib/lib)
+find_library(LVGL_LIB lvgl HINTS ${PROJECT_SOURCE_DIR}/build/lib/lvgl/lib)
 
-target_link_libraries(main lvgl m pthread cmark cjson ${OPENSSL_LIB} ${CRYPTO_LIB} ${ZLIB_LIB} ${CURL_LIB} ${ICUUC_LIB} ${ICUI18N_LIB} ${ICUDATA_LIB} ${BACKTRACE_LIB})
+target_link_libraries(main m pthread cmark cjson ${LVGL_LIB} ${OPENSSL_LIB} ${CRYPTO_LIB} ${ZLIB_LIB} ${CURL_LIB} ${ICUUC_LIB} ${ICUI18N_LIB} ${ICUDATA_LIB} ${BACKTRACE_LIB})
+
+add_compile_definitions(LV_CONF_PATH=${PROJECT_SOURCE_DIR}/src/lv_conf.h)
 
 target_include_directories(
     main PUBLIC
     ${PROJECT_SOURCE_DIR}
-    ${PROJECT_SOURCE_DIR}/lib/lvgl
     ${PROJECT_SOURCE_DIR}/lib/cJSON
     ${PROJECT_SOURCE_DIR}/lib/cmark/src
     ${PROJECT_SOURCE_DIR}/lib/curl/include
@@ -45,6 +44,7 @@ target_include_directories(
     ${PROJECT_SOURCE_DIR}/build/lib/icu/include
     ${PROJECT_SOURCE_DIR}/build/lib/libbacktrace/include
     ${PROJECT_SOURCE_DIR}/build/lib/openssl/include
+    ${PROJECT_SOURCE_DIR}/build/lib/lvgl/include/lvgl
 )
 
 add_custom_target(copy_dependencies ALL

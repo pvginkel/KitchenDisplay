@@ -8,7 +8,7 @@ Type=simple
 EnvironmentFile=/etc/environment
 Environment=LD_LIBRARY_PATH=/var/local/kitchendisplay/bin:$LD_LIBRARY_PATH
 Environment=KEYBOARD_DEV=/dev/input/event1
-Environment=MOUSE_DEV=/dev/input/event0
+Environment=MOUSE_DEV=/dev/input/event2
 Environment=CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 ExecStart=/var/local/kitchendisplay/bin/main
 WorkingDirectory=/var/local/kitchendisplay/bin

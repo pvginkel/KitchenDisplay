@@ -1,0 +1,38 @@
+schemaVersion: "0.1"
+producer: kitchen-display
+
+# Kitchen Display — a Raspberry Pi kiosk app (native C++/LVGL) that renders a
+# kitchen board (Trello cards, markdown). NOT an esp-mdm device. It builds in
+# Jenkins (the former pipelines/kitchendisplay.groovy is now the root Jenkinsfile;
+# Jenkinsfile.architecture sits next to it). The physical unit is currently
+# powered off, but the product is live — lifecycle: active.
+#
+# Only outbound dependency is the Trello REST API (external SaaS, hardcoded base
+# URL → no boundBy).
+
+applicationComponents:
+  - id: app:kitchen-display,bfd7ec88-4f20-47d7-9008-60de4f84e250
+    label: Kitchen Display
+    summary: >-
+      Raspberry Pi kiosk application (C++/LVGL) that renders a kitchen board from
+      Trello cards and markdown content on an attached display.
+    introduced: 2024-03-29
+    lifecycle: active
+    stereotype: SoftwareProduct
+    sourceRepository: git:pvginkel/KitchenDisplay
+
+applicationServices:
+  - id: svc:trello-api,5744595e-a275-4f55-9243-de88baea3417
+    label: Trello API
+    summary: >-
+      Atlassian Trello REST API the kitchen display reads to fetch board cards.
+    introduced: 2024-03-29
+    lifecycle: active
+    stats:
+      homepage: https://developer.atlassian.com/cloud/trello/
+
+relations:
+  - id: rel:kitchen-display-consumes-trello-api
+    source: app:kitchen-display,bfd7ec88-4f20-47d7-9008-60de4f84e250
+    target: svc:trello-api,5744595e-a275-4f55-9243-de88baea3417
+    type: Association

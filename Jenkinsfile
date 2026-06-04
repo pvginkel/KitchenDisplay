@@ -1,4 +1,4 @@
-library('JenkinsPipelineUtils') _
+library identifier: 'JenkinsPipelineUtils', changelog: false
 
 podTemplate(inheritFrom: 'jenkins-agent-large', containers: [
     containerTemplates.dockbuild('dockcross', 'dockcross/linux-arm64'),

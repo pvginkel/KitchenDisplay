@@ -32,7 +32,7 @@ applicationServices:
       homepage: https://developer.atlassian.com/cloud/trello/
 
 relations:
-  - id: rel:kitchen-display-consumes-trello-api
-    source: app:kitchen-display,bfd7ec88-4f20-47d7-9008-60de4f84e250
-    target: svc:trello-api,5744595e-a275-4f55-9243-de88baea3417
-    type: Association
+  - id: rel:trello-api-serves-kitchen-display
+    source: svc:trello-api,5744595e-a275-4f55-9243-de88baea3417
+    target: app:kitchen-display,bfd7ec88-4f20-47d7-9008-60de4f84e250
+    type: Serving

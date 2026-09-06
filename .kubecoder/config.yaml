@@ -1,0 +1,57 @@
+# KitchenDisplay — a Raspberry Pi kiosk application (C++/LVGL), cross-compiled
+# for aarch64. Nothing in this repo runs in the pod: the binary only runs on the
+# physical display host, and Jenkins deploys it there.
+#
+# Schema: https://kubecoder.home/help/reference/config-yaml/
+
+repos:
+  # CI clones HelmCharts beside this repo for the deploy step (see Jenkinsfile).
+  # It is reference material here — read-only, shared with every environment of
+  # this project, and nothing in this environment writes into it.
+  - url: https://github.com/pvginkel/HelmCharts
+    shared: true
+
+capabilities:
+  github: rw
+
+tools:
+  # dockcross/linux-arm64 with CMake and Make — the container CI's cross pass
+  # runs in. CROSS-ONLY: $CC/$CXX are the aarch64 compilers and its `cmake`
+  # injects the cross toolchain file, so a pass meant to produce native x86_64
+  # binaries silently cross-compiles here unless it overrides them. The native
+  # ICU host pass does exactly that — see `build:` in project.yaml.
+  - use: arm64-cross
+
+# No services: the app talks only to the Trello REST API over the internet.
+# No imageBuilder: this repo ships a binary, not a container image.
+# No ports: nothing here serves anything in the pod.
+# No secrets: the Trello credentials live on the display host, not in the build.
+
+setup:
+  - kc project setup
+
+preamble:
+  instructions: |
+    KitchenDisplay is a Raspberry Pi kiosk application (C++/LVGL) that renders a
+    Trello-backed kitchen board. It is cross-compiled for aarch64 and nothing it
+    builds can run in this pod — the binary only runs on the physical display
+    host, which Jenkins deploys to over rsync+ssh.
+
+    Build with `kc project build`. That runs the two passes of
+    scripts/dockcross/crossbuild.sh, in order, both in the `arm64-cross`
+    sidecar, mirroring the Jenkinsfile. The first pass is a NATIVE x86_64 ICU
+    host build and overrides CC/CXX to the sidecar's native gcc; the second
+    cross-compiles the vendored libraries and the application. Output lands in
+    build/ (libraries) and bin/ (the binary plus the shared libraries it needs).
+
+    The build is incremental — crossbuild.sh skips a library whose
+    build/lib/<name> already exists — but the first run from a clean tree builds
+    ICU twice, OpenSSL, curl, zlib, libbacktrace and LVGL from source, and takes
+    a long time. scripts/clean.sh resets the tree completely.
+
+    The vendored libraries are git submodules under lib/, which crossbuild.sh
+    initialises itself. tools/windows_simulator is deliberately left
+    uninitialised.
+
+    There is no test suite. `kc project lint` validates the architecture
+    artifact against https://architecture.webathome.org — it needs the network.

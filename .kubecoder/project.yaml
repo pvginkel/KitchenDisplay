@@ -1,0 +1,55 @@
+# Curated automation for KitchenDisplay.
+#
+# Schema: https://kubecoder.home/help/reference/project-yaml/
+#
+# One component only: the repository is a single CMake application with its
+# dependencies vendored as submodules under lib/. There is no sub-project with a
+# toolchain of its own to split out.
+
+projects:
+  root:
+    description: >-
+      Kitchen Display — a Raspberry Pi kiosk application (C++/LVGL) that renders
+      a Trello-backed kitchen board. Cross-compiled for aarch64; Jenkins deploys
+      the binary to the physical display host.
+
+    # The main build pipeline. AaC/KitchenDisplay is a second job on this repo —
+    # the architecture-as-code producer that runs Jenkinsfile.architecture.
+    # Nothing reads this key today; it records the pipeline's name.
+    jenkins: Firmware/KitchenDisplay
+
+    # No setup: scripts/dockcross/crossbuild.sh runs
+    # `git submodule update --init --depth 1` for each library it is about to
+    # build, so a fresh clone needs nothing done to it before `build`.
+    # tools/windows_simulator is deliberately left uninitialised.
+
+    build:
+      # The two passes of the Jenkinsfile, in the same order. CI splits them
+      # over two containers — dockbuild/ubuntu2104 for the native pass, then
+      # dockcross/linux-arm64 for the cross pass. Here both run in arm64-cross,
+      # because the dev container has no C toolchain at all (no cc, gcc, make or
+      # cmake), so there is nowhere else for the native pass to go.
+      #
+      # Pass 1 builds ICU for the HOST (x86_64): `runConfigureICU Linux`, whose
+      # output pass 2 hands to ICU's --with-cross-build. runConfigureICU honours
+      # a pre-set $CC, and arm64-cross presets $CC/$CXX to the aarch64
+      # compilers — so without this override the "host" build silently
+      # cross-compiles and pass 2 cannot run the tools it produced. The
+      # dockcross base image carries the native gcc/g++ alongside the cross
+      # compilers, which is what makes the override work.
+      - cexec arm64-cross env CC=gcc CXX=g++ scripts/dockcross/crossbuild.sh prerequisites
+      # Pass 2: everything else, cross-compiled, with the sidecar's own $CC.
+      - cexec arm64-cross scripts/dockcross/crossbuild.sh
+
+    # No test: this repository has no test suite, and there is nothing in it a
+    # suite could exercise in the pod — the binary is an aarch64 kiosk app that
+    # only runs on the physical display host. Deliberately unset, not missing.
+
+    # Validates the architecture-as-code artifact, exactly as
+    # Jenkinsfile.architecture does. NOTE: this is a network call inside a gate
+    # — it POSTs to https://architecture.webathome.org, so `kc project lint`
+    # fails if that service is unreachable, whatever the artifact says.
+    #
+    # scripts/format.sh is deliberately NOT wired here: it runs clang-format,
+    # which no toolchain in this environment provides.
+    lint: ./scripts/arch-validate.py docs/architecture/*.yaml

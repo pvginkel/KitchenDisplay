@@ -27,9 +27,6 @@ tools:
 # No ports: nothing here serves anything in the pod.
 # No secrets: the Trello credentials live on the display host, not in the build.
 
-setup:
-  - kc project setup
-
 preamble:
   instructions: |
     KitchenDisplay is a Raspberry Pi kiosk application (C++/LVGL) that renders a

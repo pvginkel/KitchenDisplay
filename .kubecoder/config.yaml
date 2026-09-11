@@ -4,13 +4,6 @@
 #
 # Schema: https://kubecoder.home/help/reference/config-yaml/
 
-repos:
-  # CI clones HelmCharts beside this repo for the deploy step (see Jenkinsfile).
-  # It is reference material here — read-only, shared with every environment of
-  # this project, and nothing in this environment writes into it.
-  - url: https://github.com/pvginkel/HelmCharts
-    shared: true
-
 capabilities:
   github: rw
 

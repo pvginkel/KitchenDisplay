@@ -14,8 +14,10 @@ tools:
   # binaries silently cross-compiles here unless it overrides them. The native
   # ICU host pass does exactly that — see `build:` in project.yaml.
   - use: arm64-cross
-  # Native GCC/Clang toolchain: clang-format for the lint gate, plus the native
-  # ICU host pass if it can move here — see `build:` in project.yaml.
+  # Native GCC/Clang toolchain, for clang-format in the lint gate. The native
+  # ICU host pass cannot move here: tools linked against this image's glibc
+  # 2.42 do not load in arm64-cross (Debian 12, glibc 2.36), where pass 2 runs
+  # them.
   - use: native
 
 # No services: the app talks only to the Trello REST API over the internet.

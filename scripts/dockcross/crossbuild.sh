@@ -20,10 +20,10 @@ build_libbacktrace() {
 
     init_submodule lib/libbacktrace
 
-    cd $ROOT/lib/libbacktrace
-    mkdir -p $ROOT/build/lib/libbacktrace
+    mkdir -p $ROOT/build/lib/libbacktrace $ROOT/build/lib/libbacktrace-build
+    cd $ROOT/build/lib/libbacktrace-build
 
-    ./configure --build "$(gcc -dumpmachine)" --host "$CROSS_TRIPLE" --prefix=$ROOT/build/lib/libbacktrace
+    $ROOT/lib/libbacktrace/configure --build "$(gcc -dumpmachine)" --host "$CROSS_TRIPLE" --prefix=$ROOT/build/lib/libbacktrace
     make -j$(nproc)
     make -j$(nproc) install
 }
@@ -70,8 +70,8 @@ build_openssl() {
 
     init_submodule lib/openssl
 
-    mkdir -p $ROOT/lib/openssl/build
-    cd $ROOT/lib/openssl/build
+    mkdir -p $ROOT/build/lib/openssl-build
+    cd $ROOT/build/lib/openssl-build
 
     $ROOT/lib/openssl/Configure linux-aarch64 --cross-compile-prefix= --prefix=$ROOT/build/lib/openssl
     make -j$(nproc) build_sw
@@ -92,6 +92,10 @@ build_zlib() {
 
     cmake -DCMAKE_INSTALL_PREFIX:PATH=$ROOT/build/lib/zlib ..
     make -j$(nproc) install
+
+    # zlib's CMake renames the tracked zconf.h aside so the one it generates
+    # wins. Put it back once installed, so the submodule stays clean.
+    git -C $ROOT/lib/zlib checkout -- zconf.h
 }
 
 build_curl() {

@@ -45,11 +45,14 @@ projects:
     # suite could exercise in the pod — the binary is an aarch64 kiosk app that
     # only runs on the physical display host. Deliberately unset, not missing.
 
-    # Validates the architecture-as-code artifact, exactly as
-    # Jenkinsfile.architecture does. NOTE: this is a network call inside a gate
-    # — it POSTs to https://architecture.webathome.org, so `kc project lint`
-    # fails if that service is unreachable, whatever the artifact says.
-    #
-    # scripts/format.sh is deliberately NOT wired here: it runs clang-format,
-    # which no toolchain in this environment provides.
-    lint: ./scripts/arch-validate.py docs/architecture/*.yaml
+    lint:
+      # Validates the architecture-as-code artifact, exactly as
+      # Jenkinsfile.architecture does. NOTE: this is a network call inside a
+      # gate — it POSTs to https://architecture.webathome.org, so `kc project
+      # lint` fails if that service is unreachable, whatever the artifact says.
+      - ./scripts/arch-validate.py docs/architecture/*.yaml
+      # Checks src/ against src/.clang-format over the files format.sh formats
+      # (src/.clang-format-ignore skips the generated fonts). native is the only
+      # toolchain with clang-format; fix a failure with
+      # `cexec native scripts/format.sh`.
+      - cexec native scripts/format.sh --dry-run --Werror

@@ -12,6 +12,10 @@ set(CMAKE_BUILD_TYPE RelWithDebInfo)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin
     CACHE PATH "Output directory for shared libraries.")
+# cJSON and cmark declare these with option() under a cmake_minimum_required
+# older than 3.13, where option() discards a normal variable of the same name.
+# CMP0077 NEW makes it honour them, so their tests are not built into bin/.
+set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 set(ENABLE_CJSON_TEST OFF)
 set(BUILD_TESTING OFF)
 
